@@ -42,8 +42,9 @@ public class CSVHandler {
     public String readFromProperties(String eircode) throws IOException {
         try(Scanner input = new Scanner(properties)) {
             boolean found = false;
+            String s1 = "";
             while(input.hasNextLine() && !found) {
-                String s1 = input.nextLine();
+                s1 = input.nextLine();
                 if (s1.startsWith(eircode)) {
                     found = true;
                 }
@@ -57,8 +58,9 @@ public class CSVHandler {
     public String readFromTax(String eircode) throws IOException {
         try(Scanner input = new Scanner(tax)) {
             boolean found = false;
+            String s1 = "";
             while(input.hasNextLine() && !found) {
-                String s1 = input.nextLine();
+                s1 = input.nextLine();
                 if (s1.startsWith(eircode)) {
                     found = true;
                 }
@@ -72,8 +74,9 @@ public class CSVHandler {
     public String readFromOwners(int ownerId) throws IOException {
         try(Scanner input = new Scanner(owners)) {
             boolean found = false;
+            String s1 = "";
             while(input.hasNextLine() && !found) {
-                String s1 = input.nextLine();
+                s1 = input.nextLine();
                 if (s1.startsWith(String.valueOf(ownerId))) {
                     found = true;
                 }
