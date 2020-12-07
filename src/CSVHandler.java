@@ -1,7 +1,5 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Scanner;
 
 public class CSVHandler {
     private File properties; // eircode,currentMarketValue,locationType,principalResidence
@@ -16,16 +14,74 @@ public class CSVHandler {
         if(!owners.exists())
         owners = new File("owners.csv");
     }
+
     public void writeToProperties(String s) throws IOException {
-        try(FileWriter out =  new FileWriter(properties)) {
-            out.write(s);
+        try(FileWriter output =  new FileWriter(properties, true)) {
+            output.write(s);
+        } catch (IOException ex) {
+            System.out.println("Cannot write to properties.csv file.");
+            throw ex;
         }
     }
-    public void writeToTax(String s) {
-        try(FileWriter out =  new FileWriter(properties)) {
-            out.write(s);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void writeToTax(String s) throws IOException{
+        try(FileWriter output =  new FileWriter(tax, true)) {
+            output.write(s);
+        } catch (IOException ex) {
+            System.out.println("Cannot write to tax.csv file.");
+            throw ex;
+        }
+    }
+    public void writeToOwners(String s) throws IOException {
+        try(FileWriter output = new FileWriter(owners, true) ) {
+            output.write(s);
+        } catch(IOException ex) {
+            System.out.println("Cannot write to owners.csv file.");
+            throw ex;
+        }
+    }
+    public String readFromProperties(String eircode) throws IOException {
+        try(Scanner input = new Scanner(properties)) {
+            boolean found = false;
+            while(input.hasNextLine() && !found) {
+                String s1 = input.nextLine();
+                if (s1.startsWith(eircode)) {
+                    found = true;
+                }
+            }
+            return (found) ? s1 : null;
+        } catch(IOException ex) {
+            System.out.println("Cannot access properties.csv.");
+            throw ex;
+        }
+    }
+    public String readFromTax(String eircode) throws IOException {
+        try(Scanner input = new Scanner(tax)) {
+            boolean found = false;
+            while(input.hasNextLine() && !found) {
+                String s1 = input.nextLine();
+                if (s1.startsWith(eircode)) {
+                    found = true;
+                }
+            }
+            return (found) ? s1 : null;
+        } catch(IOException ex) {
+            System.out.println("Cannot access tax.csv.");
+            throw ex;
+        }
+    }
+    public String readFromOwners(int ownerId) throws IOException {
+        try(Scanner input = new Scanner(owners)) {
+            boolean found = false;
+            while(input.hasNextLine() && !found) {
+                String s1 = input.nextLine();
+                if (s1.startsWith(String.valueOf(ownerId))) {
+                    found = true;
+                }
+            }
+            return (found) ? s1 : null;
+        } catch(IOException ex) {
+            System.out.println("Cannot access owners.csv.");
+            throw ex;
         }
     }
 }
