@@ -30,11 +30,25 @@ public class Payment {
      }
      public void PropertyTax(){
          
-        }
+         if (PropertyValue > 650000){
+             PropertyTax = Fees * 0.0004;
+             Fees = Fees + PropertyTax;
+            } else if(PropertyValue <= 650000 && PropertyValue >= 400000){
+             PropertyTax = Fees * 0.0002;
+             Fees = Fees + PropertyTax;
+            }else if(PropertyValue <= 400000 && PropertyValue >= 150000){
+             PropertyTax = Fees * 0.0001;
+             Fees = Fees + PropertyTax;
+            } else{
+             Fees = Fees;
+        
+           }
+    }
         
      
-    public void Fees(){
-        
+    public double Fees(){
+        Fees = Fees + 100;
+        return Fees;
     }
     public void totalPaid(){
         
