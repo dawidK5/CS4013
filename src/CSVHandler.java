@@ -39,7 +39,7 @@ public class CSVHandler {
             throw ex;
         }
     }
-    public String readFromProperties(String eircode) throws IOException {
+    public String readFromProperties(String eircode) {
         try(Scanner input = new Scanner(properties)) {
             boolean found = false;
             String s1 = "";
@@ -52,7 +52,7 @@ public class CSVHandler {
             return (found) ? s1 : null;
         } catch(IOException ex) {
             System.out.println("Cannot access properties.csv.");
-            throw ex;
+            System.exit(2);
         }
     }
     public String readFromTax(String eircode) {
