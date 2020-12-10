@@ -2,68 +2,87 @@ import java.util.*;
 import java.util.Scanner;
 
 public class TaxCalculator{
-    private double Fees;
-    private String Location;
-    private double PropertyValue;
-    private double PropertyTax;
-    private int Year; // Chosen year
-    private int Resident;
-    private int Cyear; // current year
-    private int ResidentOwner;
-   public void LivingAreaTax(String Location){  
+    private double fees;
+    private String location;
+    private double propertyValue;
+    private double propertyTax;
+    private int year; // Chosen year
+    // private int resident;
+    private int cYear; // current year
+    // private int residentOwner;
+    private boolean principalRes;
+
+    public TaxCalculator(int estMarketValue, String locationCategory, String principalPrivateRes) {
+        propertyValue = estMarketValue;
+        location = locationCategory;
+        principalRes = principalPrivateRes.equals("YES") ? true : false;
+    }
+
+
+    public void livingAreaTax(){
          
-         if (Location == "City"){
-            Fees = Fees + 100;
-        } else if(Location == "Large Town"){
-            Fees = Fees + 80;
-        }else if(Location == "Small Town"){
-            Fees = Fees + 60;
-        }else if(Location == "Village"){
-            Fees = Fees + 50;
-        }else if(Location == "CountrySide"){
-            Fees = Fees + 25;
+        if (location == "City"){
+            fees = fees + 100;
+        } else if(location == "Large Town"){
+            fees = fees + 80;
+        }else if(location == "Small Town"){
+            fees = fees + 60;
+        }else if(location == "Village"){
+            fees = fees + 50;
+        }else if(location == "CountrySide"){
+            fees = fees + 25;
         }
         
      }
-     public void PropertyTax(){
-         
-         if (PropertyValue > 650000){
-             PropertyTax = Fees * 0.0004;
-             Fees = Fees + PropertyTax;
-            } else if(PropertyValue <= 650000 && PropertyValue >= 400000){
-             PropertyTax = Fees * 0.0002;
-             Fees = Fees + PropertyTax;
-            }else if(PropertyValue <= 400000 && PropertyValue >= 150000){
-             PropertyTax = Fees * 0.0001;
-             Fees = Fees + PropertyTax;
+     public void propertyTax(){
+         if (propertyValue > 650000){
+             propertyTax = propertyValue * 0.0004;
+             fees = fees + propertyTax;
+            } else if(propertyValue <= 650000 && propertyValue >= 400000){
+             propertyTax = propertyValue * 0.0002;
+             fees = fees + propertyTax;
+            }else if(propertyValue <= 400000 && propertyValue >= 150000){
+             propertyTax = propertyValue * 0.0001;
+             fees = fees + propertyTax;
             } else{
-             Fees = Fees;
-        
+             fees = fees;
            }
      }
-    public void OverdueFees(){
+    public void overdueFees(){
         int x;
-        int Label= Year - Cyear;
+        int label= year - cYear;
         // We will get a negative number
         // We can turn a negative number back into a positive number by multiplying it by -1
-        int S = Label * -1;
-        String OverDue= String.valueOf(S);
-        for(x =0; x<OverDue.length(); x++){
-            Fees = Fees * 0.07;
+        int S = label * -1;
+        String overdue= String.valueOf(S);
+        for(x =0; x<overdue.length(); x++){
+            fees = fees * 0.07;
         }
     }
-    public Boolean  ResidentOwner(){
+    /*
+    public boolean residentOwner(){
         //Finds if resident owner lives in house
-        if(ResidentOwner == Resident) {
+
+        if(residentOwner == resident) {
          
           return true;
       }else {
-          Fees = Fees + 100;
+          fees = fees + 100;
           return false;
         }
+        }
+         */
+    public void principalResFees() {
+        if (!principalRes) {
+            fees += 100;
+        }
     }
-    public void Fees(){
-        Fees = Fees + 100;
+
+    public void fees(){
+        fees = fees + 100;
         
+    }
+    public double getTax() {
+        return fees;
     }
 }

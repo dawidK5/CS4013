@@ -2,17 +2,17 @@ import java.io.*;
 import java.util.Scanner;
 
 public class CSVHandler {
-    private File properties; // eircode,currentMarketValue,locationType,principalResidence
-    private File tax;       // eircode,owner,year,amount,paid/not paid
+    private File properties; // eircode,address,currentMarketValue,locationType,principalResidence
+    private File tax;       // eircode,ownerId,year,amount,paid/not paid
     private File owners;    // name,surname,eircodes_array[currently owned properties]
 
-    public CSVHandler() throws IOException {
-        if(!properties.exists())
-        properties = new File("properties.csv");
-        if(!tax.exists())
-        tax = new File("tax.csv");
-        if(!owners.exists())
-        owners = new File("owners.csv");
+    public CSVHandler() {
+        if (!properties.exists())
+            properties = new File("properties.csv");
+        if (!tax.exists())
+            tax = new File("tax.csv");
+        if (!owners.exists())
+            owners = new File("owners.csv");
     }
 
     public void writeToProperties(String s) throws IOException {
@@ -55,7 +55,7 @@ public class CSVHandler {
             throw ex;
         }
     }
-    public String readFromTax(String eircode) throws IOException {
+    public String readFromTax(String eircode) {
         try(Scanner input = new Scanner(tax)) {
             boolean found = false;
             String s1 = "";
@@ -68,7 +68,9 @@ public class CSVHandler {
             return (found) ? s1 : null;
         } catch(IOException ex) {
             System.out.println("Cannot access tax.csv.");
-            throw ex;
+            System.exit(2);
+        } finally {
+            return null;
         }
     }
     public String readFromOwners(int ownerId) throws IOException {
@@ -87,4 +89,44 @@ public class CSVHandler {
             throw ex;
         }
     }
-}
+
+    protected void removeLine(String fileType, String line) {
+        Scanner input;
+        File source;
+        File temp;
+        if (fileType.equals("property")) {
+            source = properties;
+        } else if (fileType.equals("tax")) {
+            source = tax;
+        } else {
+            source = owners;
+        }
+
+        try {
+            input = new Scanner(source);
+            temp = new File("temp_"+source.getName()+".csv");
+            FileWriter output = new FileWriter(temp, true);
+            while (input.hasNext()) {
+                String s1 = input.nextLine();
+                if (line.equals(s1)) {
+                    continue;
+                }
+                output.write(s1);
+            }
+            input.close();
+            output.close();
+
+            temp.renameTo(new File(source.getName()));
+            if (fileType.equals("property")) {
+                properties = temp;
+            } else if (fileType.equals("tax")) {
+                tax = temp;
+            } else {
+                owners = temp;
+            }
+        } catch (IOException e) {
+                System.out.println("Cannot remove line from a csv file.");
+                System.exit(2);
+            }
+        }
+    }
