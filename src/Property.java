@@ -35,10 +35,6 @@ public class Property {
     }
     public double getCurrentTax() {
         TaxCalculator tc = new TaxCalculator(estMarketValue, locationCategory, principalPrivateRes);
-        tc.fees();
-        tc.propertyTax();
-        tc.livingAreaTax();
-        tc.principalResFees();
         return tc.getTax();
     }
 

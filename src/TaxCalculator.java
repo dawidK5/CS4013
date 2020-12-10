@@ -83,6 +83,10 @@ public class TaxCalculator{
         
     }
     public double getTax() {
+        fees();
+        propertyTax();
+        livingAreaTax();
+        principalResFees();
         return fees;
     }
 }
