@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class CSVHandler {
     private File properties; // eircode,address,currentMarketValue,locationType,principalResidence
     private File tax;       // eircode,ownerId,year,amount,paid/not paid
-    private File owners;    // name,surname,eircodes_array[currently owned properties]
+    private File owners;    // name,surname,eircodes_array[owned properties]
 
     public CSVHandler() {
         if (!properties.exists())
@@ -54,6 +54,7 @@ public class CSVHandler {
             System.out.println("Cannot access properties.csv.");
             System.exit(2);
         }
+        return null;
     }
     public String readFromTax(String eircode) {
         try(Scanner input = new Scanner(tax)) {

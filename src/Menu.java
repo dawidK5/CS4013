@@ -14,6 +14,10 @@ public class Menu {
             System.out.println("Login as \nO)wner of a property\nM)anager from Department of Environment\nQ)uit");
             String letter = in.nextLine().toUpperCase();
             while (more) {
+                System.out.println("Enter your owner id: ");
+                String ownerId = in.nextLine().toUpperCase();
+                System.out.println("Enter your password: ");
+                String password = in.nextLine();
                 System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nE)xit");
                 letter = in.nextLine().toUpperCase();
                 if (letter.equals("O")) {
