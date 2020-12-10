@@ -6,9 +6,9 @@ public class TaxCalculator{
     private String location;
     private double propertyValue;
     private double propertyTax;
-    private int year; // Chosen year
+    // private int year; // Chosen year
     // private int resident;
-    private int cYear; // current year
+    // private int cYear; // current year
     // private int residentOwner;
     private boolean principalRes;
 
@@ -17,7 +17,17 @@ public class TaxCalculator{
         location = locationCategory;
         principalRes = principalPrivateRes.equals("YES") ? true : false;
     }
-
+    public static double overdueFees(double fees, int year, int cYear){
+        int x;
+        int label= year - cYear;
+        // We will get a negative number
+        // We can turn a negative number back into a positive number by multiplying it by -1
+        int s = label * -1;
+        for(x =0; x<s; x++){
+            fees = fees+ fees * 0.07;
+        }
+        return fees;
+    }
 
     public void livingAreaTax(){
          
@@ -48,17 +58,7 @@ public class TaxCalculator{
              fees = fees;
            }
      }
-    public void overdueFees(){
-        int x;
-        int label= year - cYear;
-        // We will get a negative number
-        // We can turn a negative number back into a positive number by multiplying it by -1
-        int S = label * -1;
-        String overdue= String.valueOf(S);
-        for(x =0; x<overdue.length(); x++){
-            fees = fees * 0.07;
-        }
-    }
+
     /*
     public boolean residentOwner(){
         //Finds if resident owner lives in house
@@ -89,4 +89,5 @@ public class TaxCalculator{
         principalResFees();
         return fees;
     }
+
 }
