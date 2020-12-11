@@ -5,13 +5,15 @@ public class Property {
     private int estMarketValue;
     private String locationCategory;
     private String principalPrivateRes;
+    private String curOwnerId;
     
-    public Property(String eircode, String address, int estMarketValue, String locationCategory, String principalPrivateRes) {
+    public Property(String eircode, String address, int estMarketValue, String locationCategory, String principalPrivateRes, String curOwnerId) {
         this.eircode = eircode;
         this.address = address;
         this.estMarketValue = estMarketValue;
         this.locationCategory = locationCategory;
         this.principalPrivateRes = principalPrivateRes;
+        this.curOwnerId = curOwnerId;
     }
 
     public String getEircode() {
@@ -37,5 +39,10 @@ public class Property {
         TaxCalculator tc = new TaxCalculator(estMarketValue, locationCategory, principalPrivateRes);
         return tc.getTax();
     }
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%d,%s,%s,%s", eircode, address, estMarketValue, locationCategory, principalPrivateRes, curOwnerId);
+    }
+
 
 }

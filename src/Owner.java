@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Owner {
@@ -6,6 +7,37 @@ public class Owner {
     private String firstname;
     private String surname;
     private ArrayList<Property> currentlyOwnedProperties;
+    private ArrayList<Payment> paymentsMade; // ever, even for sold properties
+
+    //cache data for the owner
+    public Owner(String ownerId) {
+        CSVHandler csv = new CSVHandler();
+        String ownerInfo[] = csv.readFromOwners(ownerId).replace(ownerId+",", "").split(",");
+        this.ownerId = ownerId;
+        this.firstname = ownerInfo[0];
+        this.surname = ownerInfo[1];
+        // parse all ever-owned eircodes
+        for (int i=2; i<ownerInfo.length; i++) {
+            // decide which properties are currently owned
+            // get property details by eircode from csv
+            String pd[] = csv.readFromProperties(ownerInfo[i]).split(",");
+            // pd means property details
+            // if a property's current owner is this owner then
+            if(pd[pd.length-1] == this.ownerId) {
+                currentlyOwnedProperties.add(new Property(pd[0], pd[1], Integer.parseInt(pd[2]), pd[3], pd[4], this.ownerId));
+            }
+            // use same eircode to check if this owner made payments for this property
+            String payments[] = csv.readFromTax(pd[0]).replace(pd[0]+",", "").split(",");
+            for(int j=0; j<payments.length-4; j+=4) {
+                // if this owner paid tax for this property, add a new payment to arraylist of payments
+                if(payments[j].equals(this.ownerId) && payments[j+3].equals("paid")) {
+                    paymentsMade.add(new Payment(pd[0], this.ownerId, payments[j+2]));
+                }
+
+            }
+        }
+
+    }
 
     public String getOwnerId() {
         return ownerId;
@@ -31,7 +63,7 @@ public class Owner {
     }
     public boolean registerProperty(String eircode, String address, int estMarketValue, String locationCategory, String principalPrivateRes) {
         address.replaceAll(",","");
-        Property p = new Property(eircode, address, estMarketValue, locationCategory, principalPrivateRes);
+        Property p = new Property(eircode, address, estMarketValue, locationCategory, principalPrivateRes, ownerId);
         currentlyOwnedProperties.add(p);
 
         try {
@@ -63,16 +95,21 @@ public class Owner {
         System.out.printf("This year's current tax due:\t %.2f\n", p.getCurrentTax());
         System.out.println();
     }
-    public void viewOverdueTax(Property p) {
+    public void viewOverdueTax() {
         CSVHandler csv = new CSVHandler();
+        // find all properties ever owned by an owner to see if they didn't forget to pay
+        String allProperties[] = csv.readFromOwners(ownerId).replace(ownerId+",", "").split(",");
         System.out.printf("Tax overdue (from previous years): "); // only tax to be paid by THIS owner
-        String history[] = csv.readFromTax(p.getEircode()).replace(p.getEircode(), "").split(",");
-        for(int i =0; i < history.length; i++) {
-            if (history[i].equals(ownerId) && history[i+3].equals("notpaid")) {
-                System.out.println(history[i+1]+": \t"+history[i+2]);
+        for(String eircode : allProperties) {
+            String history[] = csv.readFromTax(eircode).replace(eircode+",", "").split(",");
+            for(int i =0; i < history.length; i=i+4) {
+                if (history[i].equals(ownerId) && history[i+3].equals("notpaid")) {
+                    double due =  TaxCalculator.overdueFees(Double.parseDouble(history[i+2]), Integer.parseInt(history[i+1]), LocalDate.now().getYear());
+                    System.out.printf("%s: \t %.2f", history[i+1], due);
+                }
             }
+            System.out.println();
         }
-        System.out.println();
-        // see viewListOfProperties
+
     }
 }

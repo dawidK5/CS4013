@@ -1,4 +1,4 @@
-import java.util.Locale;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 public class Menu {
@@ -9,18 +9,34 @@ public class Menu {
 
         public void run() {
             boolean more = true;
-            // AppointmentCalendar calendar = new AppointmentCalendar();
+
             System.out.println("Property Charge Management System, version 0.1");
             System.out.println("Login as \nO)wner of a property\nM)anager from Department of Environment\nQ)uit");
             String letter = in.nextLine().toUpperCase();
             while (more) {
-                System.out.println("Enter your owner id: ");
-                String ownerId = in.nextLine().toUpperCase();
-                System.out.println("Enter your password: ");
-                String password = in.nextLine();
-                System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nE)xit");
-                letter = in.nextLine().toUpperCase();
                 if (letter.equals("O")) {
+                    boolean flag = false;
+                    Owner owner;
+                    HashMap<String,String> users = new HashMap<>();
+                    users.put("12345AB", "pass321");
+
+                    while(flag) {
+                        System.out.println("Enter your owner id: ");
+                        String ownerId = in.nextLine().toUpperCase();
+                        if(users.containsKey(ownerId)) {
+                            System.out.println("Enter your password: ");
+                            String password = in.nextLine();
+                            if (users.get(ownerId).equals(password)) {
+                                owner = new Owner(ownerId);
+                                flag = true;
+                            } else {
+                                System.out.println("Wrong password. Please try again.");
+                            }
+                        }
+                        System.out.println("Wrong username. Please try again.");
+                    }
+                    System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nE)xit");
+                    letter = in.nextLine().toUpperCase();
                     if(letter.equals("R")) {
                         System.out.println("Enter property Eircode: ");
                         String eircode = in.nextLine();
@@ -49,7 +65,7 @@ public class Menu {
                             // we should move the registerProperty method to more appropriate location e.g. PCMSystem
                             // as property should be added for a specific owner. Maybe we should have a list of owners
                             // and just read it into arraylist in PCMSystem?
-                            System.out.println((new Owner().registerProperty(eircode, address, estMarketValue, locationCategory, ppRes)) ? "Property added successfully" : "Error, try again later");
+                            System.out.println((owner.registerProperty(eircode, address, estMarketValue, locationCategory, ppRes)) ? "Property added successfully" : "Error, try again later");
 
                         }
 

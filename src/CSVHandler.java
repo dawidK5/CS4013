@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.Scanner;
 
 public class CSVHandler {
-    private File properties; // eircode,address,currentMarketValue,locationType,principalResidence
+    private File properties; // eircode,address,currentMarketValue,locationType,principalResidence, currentOwnerId
     private File tax;       // eircode,ownerId,year,amount,paid/not paid
-    private File owners;    // name,surname,eircodes_array[owned properties]
+    private File owners;    // ownerId,name,surname,eircodes_array[all ever-owned properties]
 
     public CSVHandler() {
         if (!properties.exists())
@@ -74,21 +74,22 @@ public class CSVHandler {
             return null;
         }
     }
-    public String readFromOwners(int ownerId) throws IOException {
+    public String readFromOwners(String ownerId) {
         try(Scanner input = new Scanner(owners)) {
             boolean found = false;
             String s1 = "";
             while(input.hasNextLine() && !found) {
                 s1 = input.nextLine();
-                if (s1.startsWith(String.valueOf(ownerId))) {
+                if (s1.startsWith(ownerId)) {
                     found = true;
                 }
             }
             return (found) ? s1 : null;
         } catch(IOException ex) {
             System.out.println("Cannot access owners.csv.");
-            throw ex;
+            System.exit(2);
         }
+        return null;
     }
 
     protected void removeLine(String fileType, String line) {

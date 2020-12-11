@@ -4,6 +4,9 @@
 public class Payment {
     CSVHandler csv = new CSVHandler();
 
+    public Payment(String eircode, String ownerId, String amountPaid) {
+    }
+
     public void makePayment(String eircode) {
         String str = csv.readFromProperties(eircode);
         double tax = getAmount(str);
