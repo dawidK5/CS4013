@@ -2,9 +2,17 @@
  *
  * */
 public class Payment {
+    private String eircode;
+    private String ownerId;
+    private int year;
+    private double amountPaid;
     CSVHandler csv = new CSVHandler();
 
-    public Payment(String eircode, String ownerId, String amountPaid) {
+    public Payment(String eircode, String ownerId, int year, double amountPaid) {
+        this.eircode = eircode;
+        this.ownerId = ownerId;
+        this.year = year;
+        this.amountPaid = amountPaid;
     }
 
     public void makePayment(String eircode) {
