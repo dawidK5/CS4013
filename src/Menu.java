@@ -70,29 +70,15 @@ public class Menu {
                         } else if(letter.equals("P")) {
                             System.out.println("Select property to pay the tax for: ");
 
-                            owner.payTax();
+                            // owner.payTax();
                         }
 
                     }
 
-                }
-                else if (letter.equals("C"))
-                {
+                } else if (letter.equals("C")) {
                     System.out.println("Enter Appointment Date");
-                    String line = in.nextLine();
-                    AppointmentDate day = new AppointmentDate(line);
-                    Appointment a = getChoice(calendar.getAppointmentsForDay(day));
-                    if (a != null)
-                        calendar.cancel(a);
                 }
-                else if (letter.equals("S"))
-                {
-                    System.out.println("Date");
-                    String line = in.nextLine();
-                    AppointmentDate day = new AppointmentDate(line);
-                    for (Appointment appt : calendar.getAppointmentsForDay(day))
-                        System.out.println(appt.format());
-                }
+
                 else if (letter.equals("Q")) {
                     more = false;
                 }

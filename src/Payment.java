@@ -18,7 +18,7 @@ public class Payment {
     public void makePayment(String eircode) {
         String str = csv.readFromProperties(eircode);
         double tax = getAmount(str);
-        csv.writeToTax(tax);
+        // csv.writeToTax(tax);
     }
 
     private double getAmount(String str){
