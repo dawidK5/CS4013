@@ -97,6 +97,54 @@ public class CSVHandler {
         return null;
     }
 
+    public void changeTaxPaymentStatus(String eircode, int year, double nAmount) {
+        try {
+            Scanner input = new Scanner(tax);
+            File temp = new File("temp_pay_tax.tmp");
+            FileWriter output = new FileWriter(temp, true);
+            while (input.hasNext()) {
+                String s1 = input.nextLine();
+                if (s1.startsWith(eircode)) {
+                    String s2 = s1.substring(s1.indexOf(Integer.toString(year)), s1.indexOf('d'));
+                    output.write(s1.replaceFirst(s2, s2.replaceFirst(",.*i", String.format(",%.2f,pai",nAmount))));
+                    break;
+                }
+                output.write(s1);
+            }
+            while(input.hasNext())
+                output.write(input.nextLine());
+            input.close();
+            output.close();
+            temp.renameTo(new File(tax.getName()));
+        } catch (FileNotFoundException e) {
+            System.out.println("CSV tax file not found.");
+        } catch (IOException e) {
+            System.out.println("CSV file IO exception.");
+        }
+
+
+    }
+    /*
+    public void replaceLine(String fileType, String original, String replacement) {
+        Scanner input;
+        File source;
+        File temp;
+        if (fileType.equals("property")) {
+            source = properties;
+        } else if (fileType.equals("tax")) {
+            source = tax;
+        } else {
+            source = owners;
+        }
+        temp = new File("temp_"+source.getName()+".csv");
+        try {
+            FileWriter output = new FileWriter(temp, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+     */
+
     protected void removeLine(String fileType, String line) {
         Scanner input;
         File source;

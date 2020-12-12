@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 /**Payment class
  *
  * */
@@ -6,7 +8,6 @@ public class Payment {
     private String ownerId;
     private int year;
     private double amount;
-    CSVHandler csv = new CSVHandler();
 
     public Payment(String eircode, String ownerId, int year, double amount) {
         this.eircode = eircode;
@@ -15,10 +16,18 @@ public class Payment {
         this.amount = amount;
     }
 
-    public void makePayment(String eircode) {
-        String str = csv.readFromProperties(eircode);
-        double tax = getAmount(str);
-        // csv.writeToTax(tax);
+    public void makePayment() {
+        // update payment status to 'paid' with the new amount
+        CSVHandler csv = new CSVHandler();
+        if(year > LocalDate.now().getYear()) {
+            csv.changeTaxPaymentStatus(eircode, year, TaxCalculator.overdueFees(amount,year,LocalDate.now().getYear()));
+        } else {
+            csv.changeTaxPaymentStatus(eircode, year, amount);
+        }
+    }
+
+    public String getEircode() {
+        return eircode;
     }
 
     public int getYear() {
@@ -51,12 +60,8 @@ public class Payment {
         return str;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s,%d,%.2f");
-    }
 
-    public String getEircode() {
-        return eircode;
+    public String format() {
+        return String.format("%s,%d,%.2f",ownerId,year,amount);
     }
 }

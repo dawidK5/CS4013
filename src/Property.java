@@ -35,10 +35,12 @@ public class Property {
     public String getPrincipalPrivateRes() {
         return principalPrivateRes;
     }
+
     public double getCurrentTax() {
         TaxCalculator tc = new TaxCalculator(estMarketValue, locationCategory, principalPrivateRes);
         return tc.getTax();
     }
+
     @Override
     public String toString() {
         return String.format("%s,%s,%d,%s,%s,%s", eircode, address, estMarketValue, locationCategory, principalPrivateRes, curOwnerId);

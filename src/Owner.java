@@ -35,7 +35,7 @@ public class Owner {
             }
             // use same eircode to check if this owner made payments for this property
             String[] payments = csv.readFromTax(pd[0]).replace(pd[0] + ",", "").split(",");
-            for (int j = 0; j < payments.length - 4; j += 4) {
+            for (int j = 0; j <= payments.length - 4; j += 4) {
                 // if this owner paid tax for this property, add a new payment to arraylist of payments
                 if (payments[j].equals(this.ownerId)) {
                     if(payments[j + 3].equals("paid")) {
@@ -77,7 +77,10 @@ public class Owner {
         ArrayList<Payment> entries = new ArrayList<Payment>();
         paymentsMade.forEach(p -> {if(p.getYear() == year) {entries.add(p);}} );
         taxDue.forEach(p -> {if(p.getYear() == year) {entries.add(p);}} );
-        // entries.sort(Comparator.comparingInt(Payment::getYear));
+        if(entries.isEmpty()) {
+            System.out.println("No tax due or paid for that period");
+            return;
+        }
         System.out.println("Property\tPaid\tDue\t\tBalance");
         double sum = 0;
         for (Payment tax : entries) {
@@ -93,9 +96,15 @@ public class Owner {
 
     public void viewPaymentsMadeForAllProperties() {
         System.out.println("Payments made for all properties:");
-        System.out.println("Property\tAmount Paid\tYear Paid");
+        paymentsMade.sort(new Comparator<Payment>() { // year descending
+            @Override
+            public int compare(Payment o1, Payment o2) {
+                return o2.getYear()-o1.getYear();
+            }
+        });
+        System.out.println("Property\tAmount\tYear");
         for(Payment p : paymentsMade) {
-            System.out.printf("%s\t%.2f\t%d", p.getEircode(),p.getAmount(), p.getYear());
+            System.out.printf("%s\t\t%.2f\t%d\n", p.getEircode(),p.getAmount(), p.getYear());
         }
         System.out.println();
     }
@@ -166,7 +175,9 @@ public void viewListOfProperties() {
         }
     }
 
-    public void payTax(Property p) {
-        Payment taxPaid = new Payment(p.getEircode(), ownerId, LocalDate.now().getYear(), p.getCurrentTax());
+    public void payTax(Payment p) {
+        p.makePayment();
+        paymentsMade.add(p);
+        taxDue.remove(p);
     }
 }
