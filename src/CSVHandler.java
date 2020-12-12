@@ -7,12 +7,18 @@ public class CSVHandler {
     private File owners;    // ownerId,name,surname,eircodes_array[all ever-owned properties]
 
     public CSVHandler() {
-        if (!properties.exists())
+        // if (!properties.exists())
+        try {
             properties = new File("properties.csv");
-        if (!tax.exists())
+            properties.createNewFile();
             tax = new File("tax.csv");
-        if (!owners.exists())
+            tax.createNewFile();
             owners = new File("owners.csv");
+            owners.createNewFile();
+        } catch (IOException ex) {
+            System.out.println("Cannot create csv file.");
+            System.exit(1);
+        }
     }
 
     public void writeToProperties(String s) throws IOException {

@@ -15,7 +15,7 @@ public class TaxCalculator{
     public TaxCalculator(int estMarketValue, String locationCategory, String principalPrivateRes) {
         propertyValue = estMarketValue;
         location = locationCategory;
-        principalRes = principalPrivateRes.equals("YES") ? true : false;
+        principalRes = principalPrivateRes.equals("YES");
     }
     public static double overdueFees(double fees, int year, int cYear){
         int x;
@@ -31,15 +31,15 @@ public class TaxCalculator{
 
     public void livingAreaTax(){
          
-        if (location == "City"){
+        if (location.equals("City")){
             fees = fees + 100;
-        } else if(location == "Large Town"){
+        } else if(location.equals("Large Town")){
             fees = fees + 80;
-        }else if(location == "Small Town"){
+        }else if(location.equals("Small Town")){
             fees = fees + 60;
-        }else if(location == "Village"){
+        }else if(location.equals("Village")){
             fees = fees + 50;
-        }else if(location == "CountrySide"){
+        }else if(location.equals("Countryside")){
             fees = fees + 25;
         }
         
@@ -54,9 +54,7 @@ public class TaxCalculator{
             }else if(propertyValue <= 400000 && propertyValue >= 150000){
              propertyTax = propertyValue * 0.0001;
              fees = fees + propertyTax;
-            } else{
-             fees = fees;
-           }
+            }
      }
 
     /*
