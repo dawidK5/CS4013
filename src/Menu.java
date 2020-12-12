@@ -31,13 +31,15 @@ public class Menu {
                             } else {
                                 System.out.println("Wrong password. Please try again.");
                             }
+                        } else {
+                            System.out.println("Wrong username. Please try again.");
                         }
-                        System.out.println("Wrong username. Please try again.");
                     }
                     Owner owner = new Owner(ownerId);
                     boolean moreActions = true;
+                    String line;
                     while(moreActions) {
-                        System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nE)xit");
+                        System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nV)iew payment history\nE)xit");
                         letter = in.nextLine().toUpperCase();
                         if(letter.equals("R")) {
                             System.out.println("Enter property Eircode: ");
@@ -69,14 +71,21 @@ public class Menu {
                             owner.viewListOfProperties();
                         } else if(letter.equals("P")) {
                             System.out.println("Select property to pay the tax for: ");
-
+                            line = in.nextLine().toUpperCase();
                             // owner.payTax();
+                        } else if(letter.equals("G")) {
+                            System.out.println("Select year to get the balancing statement for: ");
+                            int year = in.nextInt();
+                            owner.getBalancingStatementFor(year);
+                            in.nextLine();
+                        } else if (letter.equals("E")) {
+                            moreActions = false;
                         }
 
                     }
 
                 } else if (letter.equals("C")) {
-                    System.out.println("Enter Appointment Date");
+
                 }
 
                 else if (letter.equals("Q")) {

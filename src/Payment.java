@@ -5,20 +5,28 @@ public class Payment {
     private String eircode;
     private String ownerId;
     private int year;
-    private double amountPaid;
+    private double amount;
     CSVHandler csv = new CSVHandler();
 
-    public Payment(String eircode, String ownerId, int year, double amountPaid) {
+    public Payment(String eircode, String ownerId, int year, double amount) {
         this.eircode = eircode;
         this.ownerId = ownerId;
         this.year = year;
-        this.amountPaid = amountPaid;
+        this.amount = amount;
     }
 
     public void makePayment(String eircode) {
         String str = csv.readFromProperties(eircode);
         double tax = getAmount(str);
         // csv.writeToTax(tax);
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public double getAmount() {
+        return amount;
     }
 
     private double getAmount(String str){
@@ -41,5 +49,14 @@ public class Payment {
             str = strAr[index];
         }
         return str;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%d,%.2f");
+    }
+
+    public String getEircode() {
+        return eircode;
     }
 }

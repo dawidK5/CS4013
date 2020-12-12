@@ -76,9 +76,8 @@ public class CSVHandler {
         } catch(IOException ex) {
             System.out.println("Cannot access tax.csv.");
             System.exit(2);
-        } finally {
-            return null;
         }
+        return null;
     }
     public String readFromOwners(String ownerId) {
         try(Scanner input = new Scanner(owners)) {
