@@ -1,6 +1,10 @@
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
+
+/**
+ * The Menu is a command line user interface system cooperating with PCMSystem class
+ */
 public class Menu {
         private Scanner in;
         public Menu() {
