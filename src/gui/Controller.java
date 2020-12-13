@@ -21,6 +21,10 @@ public class Controller
 
 
     //Exit button:
+    /**
+     * This method is used when the 'exit' button of the GUI is pressed
+     * @param createAccount
+     */
     public void exitGUI(ActionEvent createAccount)
     {
         Platform.exit();
@@ -39,6 +43,11 @@ public class Controller
     @FXML
     private javafx.scene.control.Button closeButton;
 
+    /**
+     * This method is used in the login window. Checks if username and password both exist and match each other.
+     * @param loginEvent
+     * @throws Exception
+     */
     public void LoginAttempt(ActionEvent loginEvent) throws Exception
     {
         CSVHandler csv = new CSVHandler();
@@ -72,6 +81,11 @@ public class Controller
 
     }
 
+    /**
+     * This method is used when the 'Create Account' button is pressed in the login window. Creates the 'Create Account' window.
+     * @param createAccountEvent
+     * @throws Exception
+     */
     public void CreateAccount(ActionEvent createAccountEvent) throws Exception
     {
 
@@ -95,6 +109,12 @@ public class Controller
 
 
 
+    /**
+     * This method is used in the create account window. Checks if both passwords entered match each other and if so,
+     * creates a new username and password.
+     * @param createAccountButton
+     * @throws Exception
+     */
     public void CreateAccountButton(ActionEvent createAccountButton) throws Exception {
         if (newPassword.getText().equals(confirmPassword.getText())) {
             this.username = newUsername.getText();
@@ -110,6 +130,11 @@ public class Controller
     }
 
     //Main Menu Window:
+    /**
+     * Used when "Owner" button is pressed in the main menu window. Launches owners window.
+     * @param ownerBTN
+     * @throws Exception
+     */
     public void ownersButton(ActionEvent ownerBTN) throws Exception
     {
         Stage owners = new Stage();
@@ -119,6 +144,11 @@ public class Controller
         owners.show();
     }
 
+    /**
+     * Used when "Property" button is pressed in main menu window. Launches properties window.
+     * @param propertyBTN
+     * @throws Exception
+     */
     public void propertyButton(ActionEvent propertyBTN) throws Exception
     {
         Stage properties = new Stage();
@@ -128,6 +158,11 @@ public class Controller
         properties.show();
     }
 
+    /**
+     * Used when "Tax" button is pressed in main menu window. Launches tax window.
+     * @param taxBTN
+     * @throws Exception
+     */
     public void taxButton(ActionEvent taxBTN) throws Exception
     {
         Stage tax = new Stage();
