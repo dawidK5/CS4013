@@ -60,7 +60,7 @@ public class Controller
 
 
             Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
-            login.setTitle("CS4013 Project - Main main.Menu");
+            login.setTitle("CS4013 Project - Main Menu");
             login.setScene(new Scene(root, 600, 450));
             login.show();
 
@@ -109,7 +109,7 @@ public class Controller
         }
     }
 
-    //Main main.Menu Window:
+    //Main Menu Window:
     public void ownersButton(ActionEvent ownerBTN) throws Exception
     {
         Stage owners = new Stage();

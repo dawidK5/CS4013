@@ -23,7 +23,6 @@ public class Payment implements Comparable{
     public void makePayment() {
         // update payment status to 'paid' with the new amount
         CSVHandler csv = new CSVHandler();
-        // if
         if(yearDue < LocalDate.now().getYear()) {
             csv.changeTaxPaymentStatus(eircode, yearDue, TaxCalculator.overdueFees(amount,yearDue,LocalDate.now().getYear()));
         } else {
@@ -50,14 +49,14 @@ public class Payment implements Comparable{
     public String format() {
         return String.format("%s,%d,%d,%.2f",ownerId,yearDue,yearPaid,amount);
     }
-    // year descending
 
 
-    // @Override
+
+    @Override
     public int compareTo(Object o) {
         return ((Payment)o).getYearDue() - this.getYearDue();
     }
-
+    // year descending
 
     /*
     private double getAmount(String str){
@@ -70,7 +69,7 @@ public class Payment implements Comparable{
             locationType = ifGet(i, 2, values);
             primaryResidence = ifGet(i, 3, values);
         }
-        main.TaxCalculator tax = new main.TaxCalculator(Integer.parseInt(marketValue), locationType, primaryResidence);
+        TaxCalculator tax = new TaxCalculator(Integer.parseInt(marketValue), locationType, primaryResidence);
         return tax.getTax();
     }
 

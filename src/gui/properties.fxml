@@ -12,7 +12,7 @@
             <TableColumn prefWidth="100.0" text="Price" />
             <TableColumn prefWidth="100.0" text="Location" />
             <TableColumn prefWidth="100.0" text="Yes/No" />
-            <TableColumn prefWidth="100.0" text="main.Owner User ID" />
+            <TableColumn prefWidth="100.0" text="Owner User ID" />
         </columns>
       </TableView>
    </center>

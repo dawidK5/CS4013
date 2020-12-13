@@ -11,7 +11,7 @@
             <PasswordField fx:id="confirmPassword" layoutX="226.0" layoutY="224.0" onAction="#CreateAccountButton" promptText="Confirm Password" />
             <PasswordField fx:id="newPassword" layoutX="226.0" layoutY="175.0" onAction="#CreateAccountButton" promptText="Enter Password" />
             <Button fx:id="createAccountButton" layoutX="251.0" layoutY="343.0" mnemonicParsing="false" onAction="#CreateAccountButton" text="Create Account" />
-            <CheckBox layoutX="226.0" layoutY="273.0" mnemonicParsing="false" text="main.Property main.Owner" />
+            <CheckBox layoutX="226.0" layoutY="273.0" mnemonicParsing="false" text="Property Owner" />
             <CheckBox layoutX="226.0" layoutY="303.0" mnemonicParsing="false" text="Management" />
             <Button fx:id="closeButton" layoutX="508.0" layoutY="370.0" mnemonicParsing="false" onAction="#exitGUI" prefWidth="42.0" text=" Exit " />
          </children>

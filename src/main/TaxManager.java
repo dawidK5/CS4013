@@ -35,7 +35,7 @@ public class TaxManager {
         CSVHandler csv = new CSVHandler();
         String[] payData1 = csv.readFromTax(eircode).replaceFirst(eircode, "").split(",");
         System.out.println("Tax data for property "+eircode);
-        System.out.println("Year\tmain.Owner\tTax due\t\tYear paid\tAmount Paid");
+        System.out.println("Year\tOwner\tTax due\t\tYear paid\tAmount Paid");
         for (int i=payData1.length-1; i-4>=0; i-=5) {
             System.out.printf("%s\t%s\t\t%.2f\t\t%s\t\t%.2f\n", payData1[i-3],payData1[i-4],(Double.parseDouble(payData1[i-1])),payData1[i-2],
                     (payData1[i-1].charAt(0) == '0') ? 0 : TaxCalculator.overdueFees(Double.parseDouble(payData1[i-1]),Integer.parseInt(payData1[i-3]),Integer.parseInt(payData1[i-2])));
@@ -48,7 +48,7 @@ public class TaxManager {
     public static void viewOverdueTaxForYear(int year) {
         CSVHandler csv = new CSVHandler();
         System.out.println("Tax overdue for " + year);
-        System.out.println("main.Property\tmain.Owner\tTax overdue");
+        System.out.println("Property\tOwner\tTax overdue");
         ArrayList<String> payData1 = csv.readFromTax(year);
         String eircode;
         // owner;
@@ -68,7 +68,7 @@ public class TaxManager {
         public static void viewOverdueTaxForYearArea(int year, String routingKey) {
             CSVHandler csv = new CSVHandler();
             System.out.println("Tax overdue for " +year);
-            System.out.println("main.Property\tmain.Owner\tTax overdue");
+            System.out.println("Property\tOwner\tTax overdue");
             ArrayList<String> payData1 = csv.readFromTax(year, routingKey);
             String eircode;
             // owner;

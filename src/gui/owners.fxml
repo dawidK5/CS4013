@@ -7,7 +7,7 @@
    <center>
       <TableView prefHeight="600.0" prefWidth="900.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="100.0" text="main.Owner User ID" />
+          <TableColumn prefWidth="100.0" text="Owner User ID" />
           <TableColumn prefWidth="100.0" text="Firstname" />
             <TableColumn prefWidth="100.0" text="Surname" />
             <TableColumn prefWidth="100.0" text="Eircode" />

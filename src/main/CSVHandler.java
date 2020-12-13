@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * main.CSVHandler is class for reading from and writing to the csv files.
+ * CSVHandler is class for reading from and writing to the csv files.
  */
 public class CSVHandler {
     private File properties; // eircode,address,currentMarketValue,locationType,principalResidence, currentOwnerId
@@ -212,7 +212,7 @@ public class CSVHandler {
     }
 
 /*
-    public ArrayList<String> readTaxesDueFromTax(main.TaxCalculator tc) {
+    public ArrayList<String> readTaxesDueFromTax(TaxCalculator tc) {
         double sum = 0;
         try (Scanner input = new Scanner(tax)) {
 

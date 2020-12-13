@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * The main.Menu is a command line user interface system cooperating with main.PCMSystem class
+ * The Menu is a command line user interface system cooperating with PCMSystem class
  */
 public class Menu {
         private Scanner in;
@@ -15,7 +15,7 @@ public class Menu {
         public void run() {
             boolean more = true;
 
-            System.out.println("main.Property Charge Management System, version 0.1");
+            System.out.println("Property Charge Management System, version 0.1");
             System.out.println("Login as \nO)wner of a property\nM)anager from Department of Environment\nQ)uit");
             String letter = in.nextLine().toUpperCase();
             while (more) {
@@ -67,10 +67,7 @@ public class Menu {
                             System.out.println("Are you sure all data given is correct and that you want to add this property to your account? (yes/no): ");
                             String ans = in.nextLine().toUpperCase();
                             if (ans.equals("YES")) {
-                                // we should move the registerProperty method to more appropriate location e.g. main.PCMSystem
-                                // as property should be added for a specific owner. Maybe we should have a list of owners
-                                // and just read it into arraylist in main.PCMSystem?
-                                System.out.println((owner.registerProperty(eircode, address, estMarketValue, locationCategory, ppRes)) ? "main.Property added successfully" : "Error, try again later");
+                                System.out.println((owner.registerProperty(eircode, address, estMarketValue, locationCategory, ppRes)) ? "PropertyProperty added successfully" : "Error, try again later");
                             }
                         } else if (letter.equals("L")) {
                             owner.viewListOfProperties();
@@ -114,7 +111,7 @@ public class Menu {
                     boolean moreActions = true;
                     String line;
                     while (moreActions) {
-                        System.out.println("V)iew all tax payment\nO)verdue main.Property tax\nT)ax in an Area");
+                        System.out.println("V)iew all tax payment\nO)verdue property\tProperty tax\nT)ax in an Area");
                         if (letter.equals("V")) {
                             System.out.println("P)roperty tax Payments\nO)wner Tax Payments ");
                             if (letter.equals("P")) {
