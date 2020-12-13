@@ -9,21 +9,26 @@ public class TaxCalculator{
     // 0=maxValue 1=middleValue 2=minValue
     private double[] propertyValues = {650000, 400000, 150000};
     // 0=propertyValue>maxValue 1=propertyValue>=middleValue 2=propertyValue>=minValue
-    private double[] levies = {0.0004, 0.0002, 0.0001};
+    private double[] levys = {0.0004, 0.0002, 0.0001};
     // 0=setFee 1=principalResidenceFee
     private double[] feesArr = {100, 100};
     private boolean principalRes;
 
-    private void setRate(double rate, int index){
-        if(index > rates.length-1)index= rates.length-1;
-        else if(index < 0)index = 0;
+    public void setRate(double rate, int index){
+        index = checker(index, rates);
         rates[index] = rate;
     }
-    private void setLevies(double levie, int index){
-        levies[index] = levie;
+    public void setLevys(double levy, int index){
+        index = checker(index, levys);
+        levys[index] = levy;
     }
-    private void setPropertyValue(double propertyValue, int index){
+    public void setPropertyValue(double propertyValue, int index){
+        index = checker(index, propertyValues);
         propertyValues[index] = propertyValue;
+    }
+    public void setFees(double fee, int index){
+        index = checker(index, feesArr);
+        feesArr[index] = fee;
     }
 
     public TaxCalculator(int estMarketValue, String locationCategory, String principalPrivateRes) {
@@ -61,13 +66,13 @@ public class TaxCalculator{
 
     public void propertyTax(){
         if (propertyValue > propertyValues[0]){
-            propertyTax = propertyValue * levies[0];
+            propertyTax = propertyValue * levys[0];
             fees = fees + propertyTax;
         } else if(propertyValue <= propertyValues[0] && propertyValue >= propertyValues[1]){
-            propertyTax = propertyValue * levies[1];
+            propertyTax = propertyValue * levys[1];
             fees = fees + propertyTax;
         }else if(propertyValue <= propertyValues[1] && propertyValue >= propertyValues[1]){
-            propertyTax = propertyValue * levies[2];
+            propertyTax = propertyValue * levys[2];
             fees = fees + propertyTax;
         }
     }
@@ -80,7 +85,6 @@ public class TaxCalculator{
 
     public void fees(){
         fees = fees + feesArr[0];
-
     }
 
     public double getTax() {
@@ -90,5 +94,12 @@ public class TaxCalculator{
         principalResFees();
         return fees;
     }
+
+    private int checker(int index, double[] list) {
+        if (index > list.length - 1) index = list.length - 1;
+        else if (index < 0) index = 0;
+        return index;
+    }
+
 
 }
