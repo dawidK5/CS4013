@@ -1,19 +1,31 @@
 package sample;
 
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Controller
 {
+    public String username = "user";
+    public String password = "password";
+    Stage  login = new Stage();
 
 
+    //Exit button:
+    public void exitGUI(ActionEvent createAccount)
+    {
+        Platform.exit();
+    }
 
+    //Login Window:
     @FXML
     private Label statusLabel;
 
@@ -21,12 +33,12 @@ public class Controller
     private TextField usernameField1;
 
     @FXML
-    private TextField passwordField1;
+    private PasswordField passwordField1;
 
     @FXML
     private javafx.scene.control.Button closeButton;
 
-    public void LoginAttempt(ActionEvent login) throws Exception
+    public void LoginAttempt(ActionEvent loginEvent) throws Exception
     {
         if(usernameField1.getText().equals("") && passwordField1.getText().equals(""))
         {
@@ -40,16 +52,15 @@ public class Controller
         {
             statusLabel.setText("Enter Password");
         }
-        else if(usernameField1.getText().equals("user") && passwordField1.getText().equals("password"))
+        else if(usernameField1.getText().equals(this.username) && passwordField1.getText().equals(this.password))
         {
             statusLabel.setText("Login Successful!");
 
 
-            Stage primaryStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
-            primaryStage.setTitle("CS4013 Project - Main Menu");
-            primaryStage.setScene(new Scene(root, 600, 400));
-            primaryStage.show();
+            login.setTitle("CS4013 Project - Main Menu");
+            login.setScene(new Scene(root, 600, 450));
+            login.show();
 
         }
         else
@@ -59,14 +70,69 @@ public class Controller
 
     }
 
-    public void CreateAccount(ActionEvent createAccount) throws Exception
+    public void CreateAccount(ActionEvent createAccountEvent) throws Exception
     {
 
-        Stage primaryStage = new Stage();
+        Stage createAccount = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("CreateAccount.fxml"));
-        primaryStage.setTitle("CS4013 Project - Create Account");
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();
+        createAccount.setTitle("CS4013 Project - Create Account");
+        createAccount.setScene(new Scene(root, 600, 450));
+        createAccount.show();
+
+    }
+
+    //Create Account Window:
+    @FXML
+    private TextField newUsername;
+
+    @FXML
+    private PasswordField newPassword;
+
+    @FXML
+    private PasswordField confirmPassword;
+
+
+
+    public void CreateAccountButton(ActionEvent createAccountButton) throws Exception {
+        if (newPassword.getText().equals(confirmPassword.getText())) {
+            this.username = newUsername.getText();
+            this.password = newPassword.getText();
+
+
+
+            Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+            login.setTitle("CS4013 Project - Login");
+            login.setScene(new Scene(root, 600, 450));
+            login.show();
+        }
+    }
+
+    //Main Menu Window:
+    public void ownersButton(ActionEvent ownerBTN) throws Exception
+    {
+        Stage owners = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("owners.fxml"));
+        owners.setTitle("CS4013 Project - Owners");
+        owners.setScene(new Scene(root, 900, 600));
+        owners.show();
+    }
+
+    public void propertyButton(ActionEvent propertyBTN) throws Exception
+    {
+        Stage properties = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("properties.fxml"));
+        properties.setTitle("CS4013 Project - Properties");
+        properties.setScene(new Scene(root, 600, 450));
+        properties.show();
+    }
+
+    public void taxButton(ActionEvent taxBTN) throws Exception
+    {
+        Stage tax = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("tax.fxml"));
+        tax.setTitle("CS4013 Project - Tax");
+        tax.setScene(new Scene(root, 900, 600));
+        tax.show();
     }
 
 
