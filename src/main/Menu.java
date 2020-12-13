@@ -14,7 +14,10 @@ public class Menu {
             in = new Scanner(System.in);
         }
 
-        public void run() {
+    /**
+     * Runs the CLI menu
+     */
+    public void run() {
             boolean more = true;
 
             System.out.println("Property Charge Management System, version 0.1");
