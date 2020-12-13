@@ -1,5 +1,8 @@
 package main;
 
+/**
+ * Calculates tax for a given property
+ */
 public class TaxCalculator{
     private double fees;
     private String location;
@@ -15,6 +18,9 @@ public class TaxCalculator{
     private double[] feesArr = {100, 100};
     private boolean principalRes;
 
+    /**
+     * No-arg constructor
+     */
     public TaxCalculator() {
 
     }
@@ -36,11 +42,25 @@ public class TaxCalculator{
         feesArr[index] = fee;
     }
 
+    /**
+     * Constructor specifying property details for tax calculation
+     * @param estMarketValue        the int for property market value
+     * @param locationCategory      the String of locaction type
+     * @param principalPrivateRes   the String for YES or NO
+     */
     public TaxCalculator(int estMarketValue, String locationCategory, String principalPrivateRes) {
         propertyValue = estMarketValue;
         location = locationCategory;
         principalRes = principalPrivateRes.equals("YES");
     }
+
+    /**
+     * Calculates fees overdue from previous years
+     * @param fees
+     * @param year
+     * @param cYear
+     * @return
+     */
     public static double overdueFees(double fees, int year, int cYear){
         int x;
         int label= year - cYear;
@@ -92,6 +112,10 @@ public class TaxCalculator{
         fees = fees + feesArr[0];
     }
 
+    /**
+     * Calculates annual tax based on current property information in this tax calculator
+     * @return      the double for fees due to be paid
+     */
     public double getTax() {
         fees();
         propertyTax();

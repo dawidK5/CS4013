@@ -2,9 +2,9 @@ package main;
 
 import java.time.LocalDate;
 
-/**main.Payment class
- *
- * */
+/**
+ * This class stores information on payments for tax due
+ */
 public class Payment implements Comparable{
     private String eircode;
     private String ownerId;
@@ -12,6 +12,14 @@ public class Payment implements Comparable{
     private int yearPaid;
     private double amount;
 
+    /**
+     * Cnstructor specifying payment details
+     * @param eircode
+     * @param ownerId
+     * @param yearDue
+     * @param yearPaid
+     * @param amount
+     */
     public Payment(String eircode, String ownerId, int yearDue, int yearPaid, double amount) {
         this.eircode = eircode;
         this.ownerId = ownerId;
@@ -20,6 +28,9 @@ public class Payment implements Comparable{
         this.amount = amount;
     }
 
+    /**
+     * Makes a payment and updates the CSV files for payments
+     */
     public void makePayment() {
         // update payment status to 'paid' with the new amount
         CSVHandler csv = new CSVHandler();
@@ -51,7 +62,11 @@ public class Payment implements Comparable{
     }
 
 
-
+    /**
+     * Sorts payments by year with descending order
+     * @param o     the object for comparison
+     * @return      negative number ifn smaller or bigger t
+     */
     @Override
     public int compareTo(Object o) {
         return ((Payment)o).getYearDue() - this.getYearDue();

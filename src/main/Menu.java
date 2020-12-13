@@ -187,7 +187,11 @@ public class Menu {
             }
         }
 
-        private void displayChoices(String[] options) {
+    /**
+     * Displays options from a String array
+     * @param options   the String array with menu options
+     */
+    private void displayChoices(String[] options) {
             char c = 'A';
             for (String o : options) {
                 System.out.println(c + ") " + o);

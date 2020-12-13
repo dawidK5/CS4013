@@ -60,27 +60,30 @@ public class Owner {
 
     }
 
+    /**
+     * Obtains ownerID
+     * @return  the String with owner id
+     */
     public String getOwnerId() {
         return ownerId;
     }
 
+    /**
+     * returns first name of this owner
+     * @return      the String of first name
+     */
     public String getFirstname() {
         return firstname;
     }
 
+    /**
+     * Returns the surname of this owner
+     * @return  the String with owner surname
+     */
     public String getSurname() {
         return surname;
     }
 
-    /*
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-     */
 
     /**
      * Forms a balancing statement with tax due and payed for this propert owner from a given year
@@ -108,10 +111,17 @@ public class Owner {
         }
     }
 
+    /**
+     * Returns list of payments made by this owner
+     * @return the ArrayList of Payments
+     */
     public ArrayList<Payment> getPaymentsMade() {
         return paymentsMade;
     }
 
+    /**
+     * Helps to view the payment history for this owner
+     */
     public void viewPaymentsMadeForAllProperties() {
         System.out.println("Payments made for all properties:");
         Collections.sort(paymentsMade);
@@ -124,6 +134,15 @@ public class Owner {
     }
 
 
+    /**
+     * Registers property as owner's on the system
+     * @param eircode               the String for eircode
+     * @param address               the String for address
+     * @param estMarketValue        the integer for the estimated market value of owner's property
+     * @param locationCategory      the String for location type of the property
+     * @param principalPrivateRes   the String for YES or NO depending whether property is a principal private residence of this owner
+     * @return                      true if registration successful, false otherwise
+     */
     public boolean registerProperty(String eircode, String address, int estMarketValue, String locationCategory, String principalPrivateRes) {
         address = address.replaceAll(",", "");
         Property p = new Property(eircode, address, estMarketValue, locationCategory, principalPrivateRes, ownerId);
@@ -144,10 +163,18 @@ public class Owner {
 
     }
 
+    /**
+     * Gets the ArrayList of currently owned properties
+     * @return the ArrayList
+     */
     public ArrayList<Property> getListOfProperties() {
         return currentlyOwnedProperties;
     }
-public void viewListOfProperties() {
+
+    /**
+     * Allows to view the list of properties for this owner and their addresses for this owner
+     */
+    public void viewListOfProperties() {
         System.out.println("List of your currently owned properties:");
         for (int i = 0; i < currentlyOwnedProperties.size(); i++) {
             System.out.println("Property " + (i+1));
@@ -156,6 +183,10 @@ public void viewListOfProperties() {
         }
     }
 
+    /**
+     * Returns the all properties ever owned
+     * @return  the ArrayList of Properties ever owned by this owner
+     */
     private ArrayList<Property> getAllProperties() {
         ArrayList<Property> allProperties = new ArrayList<>();
         CSVHandler csv = new CSVHandler();
@@ -168,21 +199,43 @@ public void viewListOfProperties() {
     }
 
 
+    /**
+     * Allows to view current tax on property for this owner
+     * @param p the property to be taxed
+     */
     public void viewCurrentTax(Property p) {
         System.out.printf("This year's current tax for %s:\t %.2f\n", p.getEircode(), p.getCurrentTax());
         System.out.println();
     }
 
+    /**
+     * Returns the tax overdue for this owner
+     * @return  the ArrayList of tax overdue for this owner
+     */
     public ArrayList<Payment> getOverdueTax() {
         Collections.sort(taxOverdue);
         return taxOverdue;
     }
+
+    /**
+     * Sorts,displays and calculates overdue tax for this owner
+     */
     public void viewOverdueTax() {
         Collections.sort(taxOverdue);
         for(Payment p : taxOverdue) {
             double due = TaxCalculator.overdueFees(p.getAmount(), p.getYearDue(), LocalDate.now().getYear());
             System.out.printf("%s: \t %.2f\n", p.getYearDue(), due);
         }
+    }
+
+    /**
+     * Adds tax payment to this system
+     * @param p the payment for the tax to be paid
+     */
+    public void payTax(Payment p) {
+        p.makePayment();
+        paymentsMade.add(p);
+        taxOverdue.remove(p);
     }
     /*
     public void viewOverdueTax() {
@@ -204,9 +257,5 @@ public void viewListOfProperties() {
 
      */
 
-    public void payTax(Payment p) {
-        p.makePayment();
-        paymentsMade.add(p);
-        taxOverdue.remove(p);
-    }
+
 }

@@ -3,6 +3,9 @@ package main;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * The TaxManager provides management functionality such as viewing tax statistics for Department of Environment
+ */
 public class TaxManager {
     private static TaxCalculator taxCal;
 

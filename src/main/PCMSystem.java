@@ -1,12 +1,22 @@
 package main;
+import gui.*;
 
-import java.io.IOException;
 
+/**
+ * PCMSystem decides between GUI and CLI menu to run
+ */
 public class PCMSystem {
     public static void main(String[] args) {
         //new Owner("12345AB").viewPaymentsMadeForAllProperties();
-        Menu m = new Menu();
-        m.run();
+        String[] empty = new String[1];
+
+        if(args.length > 0) {
+            gui.Main.main(empty);
+        } else {
+            Menu m = new Menu();
+            m.run();
+        }
+
     }
 
 
