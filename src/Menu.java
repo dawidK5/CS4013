@@ -88,8 +88,48 @@ public class Menu {
 
                     }
 
-                } else if (letter.equals("C")) {
-
+                } else if (letter.equals("M")) {
+                    boolean flag = true;
+                    
+                    HashMap<String,String> users = new HashMap<>();
+                    users.put("Department","Environment");
+                    String Department = "";
+                    while(flag) {
+                        System.out.println("Enter your Security id: ");
+                        Department = in.nextLine().toUpperCase();
+                        if(users.containsKey(Department)) {
+                            System.out.println("Enter your password: ");
+                            String password = in.nextLine();
+                            if (users.get(Department).equals(password)) {
+                                flag = false;
+                            } else {
+                                System.out.println("Wrong password. Please try again.");
+                            }
+                        } else {
+                            System.out.println("Wrong username. Please try again.");
+                        }
+                    }
+                    Owner owner = new Owner(Department);
+                    boolean moreActions = true;
+                    String line;
+                    while(moreActions) {
+                        System.out.println("V)iew all tax payment\nO)verdue Property tax\nT)ax in an Area");
+                        if (letter.equals("V")){
+                            System.out.println("P)roperty tax Payments\nO)wner Tax Payments ");
+                            if(letter.equals("P")){
+                                owner.viewListOfProperties();
+                            }else if(letter.equals("O")){
+                                owner.fees;
+                        }
+                    }else if(letter.equals("O")){
+                        System.out.println("Enter a year: ");
+                        String year = in.nextline();
+                        System.out.print("Overdue tax: ");
+                        System.out.println(fees);
+                    }else if(letter.equals("T")){
+                        System.out.println("Enter an area you wish to view: ");
+                    }
+                
                 }
 
                 else if (letter.equals("Q")) {
