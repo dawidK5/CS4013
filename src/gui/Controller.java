@@ -23,7 +23,7 @@ public class Controller
     //Exit button:
     /**
      * This method is used when the 'exit' button of the GUI is pressed
-     * @param createAccount
+     * @param createAccount this represents the button being pressed.
      */
     public void exitGUI(ActionEvent createAccount)
     {
@@ -45,7 +45,7 @@ public class Controller
 
     /**
      * This method is used in the login window. Checks if username and password both exist and match each other.
-     * @param loginEvent
+     * @param loginEvent this represents the button being pressed.
      * @throws Exception
      */
     public void LoginAttempt(ActionEvent loginEvent) throws Exception
@@ -83,7 +83,7 @@ public class Controller
 
     /**
      * This method is used when the 'Create Account' button is pressed in the login window. Creates the 'Create Account' window.
-     * @param createAccountEvent
+     * @param createAccountEvent this represents the button being pressed.
      * @throws Exception
      */
     public void CreateAccount(ActionEvent createAccountEvent) throws Exception
@@ -112,7 +112,7 @@ public class Controller
     /**
      * This method is used in the create account window. Checks if both passwords entered match each other and if so,
      * creates a new username and password.
-     * @param createAccountButton
+     * @param createAccountButton this represents the button being pressed.
      * @throws Exception
      */
     public void CreateAccountButton(ActionEvent createAccountButton) throws Exception {
@@ -132,7 +132,7 @@ public class Controller
     //Main Menu Window:
     /**
      * Used when "Owner" button is pressed in the main menu window. Launches owners window.
-     * @param ownerBTN
+     * @param ownerBTN this represents the button being pressed.
      * @throws Exception
      */
     public void ownersButton(ActionEvent ownerBTN) throws Exception
@@ -146,7 +146,7 @@ public class Controller
 
     /**
      * Used when "Property" button is pressed in main menu window. Launches properties window.
-     * @param propertyBTN
+     * @param propertyBTN this represents the button being pressed.
      * @throws Exception
      */
     public void propertyButton(ActionEvent propertyBTN) throws Exception
@@ -160,7 +160,7 @@ public class Controller
 
     /**
      * Used when "Tax" button is pressed in main menu window. Launches tax window.
-     * @param taxBTN
+     * @param taxBTN this represents the button being pressed.
      * @throws Exception
      */
     public void taxButton(ActionEvent taxBTN) throws Exception
