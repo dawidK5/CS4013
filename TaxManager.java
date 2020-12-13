@@ -4,7 +4,7 @@ public class TaxManager {
         CSVHandler csv = new CSVHandler();
         String[] paymentData = csv.readFromTax(eircode).replaceFirst(eircode, "").split(",");
         System.out.println("Tax data for property "+eircode);
-        System.out.println("Year\tOwner\tAmount due\tPaid?");
+        System.out.println("Year\tmain.Owner\tAmount due\tPaid?");
         for (int i=paymentData.length-1; i-3>=0; i-=4) {
             System.out.printf("%s\t%s\t\t%s\t\t%s\n", paymentData[i-2],paymentData[i-3],paymentData[i-1],paymentData[i]);
         }

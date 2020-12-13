@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView prefHeight="225.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="100.0" text="C10" />
+          <TableColumn prefWidth="100.0" text="C11" />
+            <TableColumn prefWidth="100.0" text="C12" />
+            <TableColumn prefWidth="100.0" text="C13" />
+            <TableColumn prefWidth="100.0" text="C14" />
+            <TableColumn prefWidth="100.0" text="C15" />
+            <TableColumn prefWidth="100.0" text="C16" />
+            <TableColumn prefWidth="100.0" text="C17" />
+            <TableColumn prefWidth="100.0" text="C18" />
+        </columns>
+      </TableView>
+   </center>
+   <top>
+      <TableView prefHeight="225.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="100.0" text="C1" />
+          <TableColumn prefWidth="100.0" text="C2" />
+            <TableColumn prefWidth="100.0" text="C3" />
+            <TableColumn prefWidth="100.0" text="C4" />
+            <TableColumn prefWidth="100.0" text="C5" />
+            <TableColumn prefWidth="100.0" text="C6" />
+            <TableColumn prefWidth="100.0" text="C7" />
+            <TableColumn prefWidth="100.0" text="C8" />
+            <TableColumn prefWidth="100.0" text="C9" />
+        </columns>
+      </TableView>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="150.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C1" />
+            <TextField layoutX="100.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C2" />
+            <TextField layoutX="200.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C3" />
+            <TextField layoutX="299.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C4" />
+            <TextField layoutX="399.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C5" />
+            <TextField layoutX="499.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C6" />
+            <TextField layoutX="599.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C7" />
+            <TextField layoutX="699.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C8" />
+            <TextField layoutX="799.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="C9" />
+            <Button layoutX="28.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="128.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="228.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="327.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="428.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="527.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="627.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="727.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="827.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <TextField layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C10" />
+            <TextField layoutX="100.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C11" />
+            <TextField layoutX="200.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C12" />
+            <TextField layoutX="299.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C13" />
+            <TextField layoutX="399.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C14" />
+            <TextField layoutX="499.0" layoutY="86.0" prefHeight="26.0" prefWidth="100.0" />
+            <TextField layoutX="499.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C15" />
+            <TextField layoutX="599.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C16" />
+            <TextField layoutX="699.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C17" />
+            <Button layoutX="28.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="128.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="228.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="327.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="428.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="527.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="627.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="727.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+            <TextField layoutX="799.0" layoutY="84.0" prefHeight="26.0" prefWidth="100.0" promptText="C18" />
+            <Button layoutX="827.0" layoutY="120.0" mnemonicParsing="false" text="Enter" />
+         </children></AnchorPane>
+   </bottom>
+</BorderPane>

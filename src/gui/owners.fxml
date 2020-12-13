@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TableView prefHeight="600.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="100.0" text="main.Owner User ID" />
+          <TableColumn prefWidth="100.0" text="Firstname" />
+            <TableColumn prefWidth="100.0" text="Surname" />
+            <TableColumn prefWidth="100.0" text="Eircode" />
+            <TableColumn prefWidth="100.0" text="Eircode" />
+            <TableColumn prefWidth="100.0" text=" Eircode" />
+            <TableColumn prefWidth="100.0" text=" Eircode" />
+            <TableColumn prefWidth="100.0" text=" Eircode" />
+            <TableColumn prefWidth="100.0" text=" Eircode" />
+        </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <AnchorPane prefHeight="100.0" prefWidth="900.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="User ID" />
+            <TextField layoutX="100.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Firstname" />
+            <TextField layoutX="200.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Surname" />
+            <TextField layoutX="300.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <TextField layoutX="400.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <TextField layoutX="500.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <TextField layoutX="600.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <TextField layoutX="700.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <TextField layoutX="800.0" layoutY="14.0" prefHeight="26.0" prefWidth="100.0" promptText="Eircode" />
+            <Button layoutX="28.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="128.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="228.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="328.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="428.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="528.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="628.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="728.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+            <Button layoutX="828.0" layoutY="50.0" mnemonicParsing="false" text="Enter" />
+         </children></AnchorPane>
+   </bottom>
+</BorderPane>
