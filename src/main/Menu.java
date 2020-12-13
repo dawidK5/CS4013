@@ -1,6 +1,8 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -16,10 +18,11 @@ public class Menu {
             boolean more = true;
 
             System.out.println("Property Charge Management System, version 0.1");
-            System.out.println("Login as \nO)wner of a property\nM)anager from Department of Environment\nQ)uit");
+            System.out.println("Login as \nO)wner of a property\nM)anager from Department of Environment\nE)xit");
             String letter = in.nextLine().toUpperCase();
             while (more) {
                 if (letter.equals("O")) {
+                    CSVHandler csv = new CSVHandler();
                     boolean flag = true;
 
                     HashMap<String, String> users = new HashMap<>();
@@ -44,7 +47,7 @@ public class Menu {
                     boolean moreActions = true;
                     String line;
                     while (moreActions) {
-                        System.out.println("R)egister a property\nL)ist my properties\nP)ay tax\nG)et balancing statement\nV)iew payment history\nE)xit");
+                        System.out.println("R)egister a property\nL)ist my properties\nC)heck tax due\nP)ay tax\nG)et balancing statement\nV)iew payment history\nE)xit");
                         letter = in.nextLine().toUpperCase();
                         if (letter.equals("R")) {
                             System.out.println("Enter property Eircode: ");
@@ -52,12 +55,23 @@ public class Menu {
                             System.out.println("Enter property Address: ");
                             String address = in.nextLine();
                             System.out.println("Enter estimated market value of your property: ");
-                            int estMarketValue = in.nextInt();
+                            String estMarketValue = in.nextLine();
                             String[] options = {"City", "Large town", "Small town", "Village", "Countryside"};
                             displayChoices(options);
                             System.out.println("Select location category: ");
-                            char index = in.nextLine().charAt(0);
-                            String locationCategory = options[index - 'A'];
+                            String l = in.nextLine().toUpperCase();
+                            String locationCat = "";
+                            if(l.equals("A") ){
+                                locationCat = options[0];
+                            } else if (l.equals("B")) {
+                                locationCat = options[1];
+                            } else if (l.equals("C")) {
+                                locationCat = options[2];
+                            } else if(l.equals("D")) {
+                                locationCat = options[3];
+                            } else if(l.equals("E")) {
+                                locationCat = options[4];
+                            }
                             System.out.println("Is this your principal private residence? (yes/no): ");
                             String ppRes = in.nextLine().toUpperCase();
                             while (!(ppRes.equals("YES") || ppRes.equals("NO"))) {
@@ -67,14 +81,22 @@ public class Menu {
                             System.out.println("Are you sure all data given is correct and that you want to add this property to your account? (yes/no): ");
                             String ans = in.nextLine().toUpperCase();
                             if (ans.equals("YES")) {
-                                System.out.println((owner.registerProperty(eircode, address, estMarketValue, locationCategory, ppRes)) ? "PropertyProperty added successfully" : "Error, try again later");
+                                System.out.println((owner.registerProperty(eircode, address, Integer.parseInt(estMarketValue), locationCat, ppRes)) ? "PropertyProperty added successfully" : "Error, try again later");
                             }
                         } else if (letter.equals("L")) {
                             owner.viewListOfProperties();
+                        } else if(letter.equals("C")) {
+                            owner.viewOverdueTax();
                         } else if (letter.equals("P")) {
                             System.out.println("Select property to pay the tax for: ");
+                            ArrayList<Payment> taxToPay = owner.getOverdueTax();
+                            String[] options = new String[owner.getOverdueTax().size()];
+                            for(int i=0; i<taxToPay.size();i++) {
+                                options[i] = taxToPay.get(i).toString();
+                            }
+                            displayChoices(options);
                             line = in.nextLine().toUpperCase();
-                            // owner.payTax();
+                            owner.payTax(taxToPay.get(line.charAt(0)-'A'));
                         } else if (letter.equals("G")) {
                             System.out.println("Select year to get the balancing statement for: ");
                             int year = in.nextInt();
@@ -88,13 +110,12 @@ public class Menu {
 
                 } else if (letter.equals("M")) {
                     boolean flag = true;
-
                     HashMap<String, String> users = new HashMap<>();
                     users.put("Department", "Environment");
                     String Department = "";
                     while (flag) {
                         System.out.println("Enter your Security id: ");
-                        Department = in.nextLine().toUpperCase();
+                        Department = in.nextLine();
                         if (users.containsKey(Department)) {
                             System.out.println("Enter your password: ");
                             String password = in.nextLine();
@@ -107,34 +128,61 @@ public class Menu {
                             System.out.println("Wrong username. Please try again.");
                         }
                     }
-                    Owner owner = new Owner(Department);
+                    // Owner owner = new Owner(Department);
                     boolean moreActions = true;
                     String line;
                     while (moreActions) {
-                        System.out.println("V)iew all tax payment\nO)verdue property\tProperty tax\nT)ax in an Area");
+                        System.out.println("V)iew tax payment data\nF)ind overdue property tax\nT)ax in an Area\nE)xit");
+                        letter = in.nextLine().toUpperCase();
                         if (letter.equals("V")) {
                             System.out.println("P)roperty tax Payments\nO)wner Tax Payments ");
+                            letter = in.nextLine().toUpperCase();
                             if (letter.equals("P")) {
-                                owner.viewListOfProperties();
+                                System.out.println("Enter property eircode: ");
+                                line = in.nextLine().toUpperCase();
+                                TaxManager.viewPaymentDataForProperty(line);
                             } else if (letter.equals("O")) {
-                                owner.viewOverdueTax();
+                                System.out.println("Enter owner id: ");
+                                line = in.nextLine().toUpperCase();
+                                TaxManager.viewOwnerTaxPaymentData(line);
                             }
-                        } else if (letter.equals("O")) {
-                            System.out.println("Enter a year: ");
-                            String year = in.nextLine();
-                            System.out.print("Overdue tax: ");
-                            //System.out.println(fees);
+                        } else if (letter.equals("F")) {
+                            System.out.println("A) By Year\nB) By Year and Eircode");
+                            letter = in.nextLine().toUpperCase();
+                            if(letter.equals("A")) {
+                                System.out.println("Enter the year: ");
+                                line = in.nextLine();
+                                TaxManager.viewOverdueTaxForYear(Integer.parseInt(line));
+                            } else if(letter.equals("B")) {
+                                System.out.println("Enter the year: ");
+                                line = in.nextLine();
+                                System.out.println("Enter the eircode: ");
+                                letter = in.nextLine().toUpperCase();
+                                TaxManager.viewOverdueTaxForYearArea(Integer.parseInt(line), letter);
+                            }
                         } else if (letter.equals("T")) {
-                            System.out.println("Enter an area you wish to view: ");
+                            String[] options = {"View total tax paid", "View average tax paid","View number and percentage of property taxes paid"};
+                            displayChoices(options);
+                            letter = in.nextLine().toUpperCase();
+                            System.out.println("Enter area routing key: ");
+                            line = in.nextLine().toUpperCase();
+                            if(letter.equals("A")) {
+                                TaxManager.viewTotalTaxPaidPerArea(line);
+                            } else if (letter.equals("B")) {
+                                TaxManager.viewAverageTaxPaidPerArea(line);
+                            } else if(letter.equals("C")) {
+                                TaxManager.viewNumberAndPercentageOfTaxPaidPerArea(line);
+                            }
+                        } else if(letter.equals("E")) {
+                            moreActions = false;
                         }
-
                     }
 
-                } else if (letter.equals("Q")) {
-                        more = false;
-                    }
+                } else if (letter.equals("E")) {
+                    more = false;
                 }
             }
+        }
 
         private void displayChoices(String[] options) {
             char c = 'A';
@@ -143,27 +191,5 @@ public class Menu {
                 c++;
             }
         }
-
-        /*
-        private Appointment getChoice(ArrayList<Appointment> choices)
-        {
-            if (choices.size() == 0) return null;
-            while (true)
-            {
-                char c = 'A';
-                for (Appointment choice : choices)
-                {
-                    System.out.println(c + ") " + choice.format());
-                    c++;
-                }
-                String input = in.nextLine();
-                int n = input.toUpperCase().charAt(0) - 'A';
-                if (0 <= n && n < choices.size())
-                    return choices.get(n);
-            }
-        }
-
-         */
-
 
 }
