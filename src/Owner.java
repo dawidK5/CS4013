@@ -1,18 +1,26 @@
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * The owner is a class that stores information about a property owner
+ */
 public class Owner {
     private String ownerId; //PPSN
     private String firstname;
     private String surname;
     private ArrayList<Property> currentlyOwnedProperties;
-    private ArrayList<Payment> taxDue;
+    private ArrayList<Payment> taxOverdue;
     private ArrayList<Payment> paymentsMade; // ever, even for sold properties
 
     //cache data for the owner
+
+    /**
+     * Constructor specifying the OwnerId
+     * @param ownerId   the String of ownerId as in owners.csv file
+     */
     public Owner(String ownerId) {
         CSVHandler csv = new CSVHandler();
         String[] ownerInfo = csv.readFromOwners(ownerId).replace(ownerId + ",", "").split(",");
@@ -22,7 +30,7 @@ public class Owner {
         // parse all ever-owned eircodes
         currentlyOwnedProperties = new ArrayList<>();
         paymentsMade = new ArrayList<>();
-        taxDue = new ArrayList<>();
+        taxOverdue = new ArrayList<>();
 
         for (int i = 2; i < ownerInfo.length; i++) {
             // decide which properties are currently owned
@@ -35,13 +43,13 @@ public class Owner {
             }
             // use same eircode to check if this owner made payments for this property
             String[] payments = csv.readFromTax(pd[0]).replace(pd[0] + ",", "").split(",");
-            for (int j = 0; j <= payments.length - 4; j += 4) {
+            for (int j = 0; j <= payments.length - 5; j += 5) {
                 // if this owner paid tax for this property, add a new payment to arraylist of payments
                 if (payments[j].equals(this.ownerId)) {
-                    if(payments[j + 3].equals("paid")) {
-                        paymentsMade.add(new Payment(pd[0], this.ownerId, Integer.parseInt(payments[j + 1]), Double.parseDouble(payments[j + 2])));
+                    if(payments[j + 4].equals("paid")) {
+                        paymentsMade.add(new Payment(pd[0], this.ownerId, Integer.parseInt(payments[j + 1]), Integer.parseInt(payments[j + 2]), Double.parseDouble(payments[j + 3])));
                     } else {
-                        taxDue.add(new Payment(pd[0], this.ownerId, Integer.parseInt(payments[j + 1]), Double.parseDouble(payments[j + 2])));
+                        taxOverdue.add(new Payment(pd[0], this.ownerId, Integer.parseInt(payments[j + 1]), 0, Double.parseDouble(payments[j + 3])));
                     }
                 }
 
@@ -72,11 +80,15 @@ public class Owner {
     }
      */
 
+    /**
+     * Forms a balancing statement with tax due and payed for this propert owner from a given year
+     * @param year  int of ear for balancing statement
+     */
     public void getBalancingStatementFor(int year) {
         System.out.println("Balancing statement for year " + year);
         ArrayList<Payment> entries = new ArrayList<Payment>();
-        paymentsMade.forEach(p -> {if(p.getYear() == year) {entries.add(p);}} );
-        taxDue.forEach(p -> {if(p.getYear() == year) {entries.add(p);}} );
+        paymentsMade.forEach(p -> {if(p.getYearPaid() == year) {entries.add(p);}} );
+        taxOverdue.forEach(p -> {if(p.getYearDue() == year) {entries.add(p);}} );
         if(entries.isEmpty()) {
             System.out.println("No tax due or paid for that period");
             return;
@@ -84,7 +96,7 @@ public class Owner {
         System.out.println("Property\tPaid\tDue\t\tBalance");
         double sum = 0;
         for (Payment tax : entries) {
-            if (taxDue.contains(tax)) {
+            if (taxOverdue.contains(tax)) {
                 sum = sum + tax.getAmount();
                 System.out.printf("%s\t\t\t\t%.2f\t%.2f\n", tax.getEircode(), tax.getAmount(), sum);
             } else {
@@ -96,15 +108,11 @@ public class Owner {
 
     public void viewPaymentsMadeForAllProperties() {
         System.out.println("Payments made for all properties:");
-        paymentsMade.sort(new Comparator<Payment>() { // year descending
-            @Override
-            public int compare(Payment o1, Payment o2) {
-                return o2.getYear()-o1.getYear();
-            }
-        });
+        Collections.sort(paymentsMade);
         System.out.println("Property\tAmount\tYear");
         for(Payment p : paymentsMade) {
-            System.out.printf("%s\t\t%.2f\t%d\n", p.getEircode(),p.getAmount(), p.getYear());
+            if(p.getYearPaid() != 0)
+                System.out.printf("%s\t\t%.2f\t%d\n", p.getEircode(),p.getAmount(), p.getYearPaid());
         }
         System.out.println();
     }
@@ -121,7 +129,8 @@ public class Owner {
             if (line != null) {
                 csv.removeLine("property", line);
             }
-            csv.writeToProperties(p.toString());
+            line += String.format(",%d,0,%.2f,notpaid", LocalDate.now().getYear(), p.getCurrentTax());
+            csv.writeToProperties(line);
             return true;
         } catch (IOException ex) {
             return false;
@@ -132,7 +141,7 @@ public class Owner {
 public void viewListOfProperties() {
         System.out.println("List of your currently owned properties:");
         for (int i = 0; i < currentlyOwnedProperties.size(); i++) {
-            System.out.println("Property" + i);
+            System.out.println("Property " + (i+1));
             System.out.println(currentlyOwnedProperties.get(i).getAddress());
             System.out.println();
         }
@@ -154,10 +163,18 @@ public void viewListOfProperties() {
 
 
     public void viewCurrentTax(Property p) {
-        System.out.printf("This year's current tax due:\t %.2f\n", p.getCurrentTax());
+        System.out.printf("This year's current tax for %s:\t %.2f\n", p.getEircode(), p.getCurrentTax());
         System.out.println();
     }
 
+    public void viewOverdueTax() {
+        Collections.sort(taxOverdue);
+        for(Payment p : taxOverdue) {
+            double due = TaxCalculator.overdueFees(p.getAmount(), p.getYearDue(), LocalDate.now().getYear());
+            System.out.printf("%s: \t %.2f\n", p.getYearDue(), due);
+        }
+    }
+    /*
     public void viewOverdueTax() {
         CSVHandler csv = new CSVHandler();
         // find all properties ever owned by an owner to see if they didn't forget to pay
@@ -175,9 +192,11 @@ public void viewListOfProperties() {
         }
     }
 
+     */
+
     public void payTax(Payment p) {
         p.makePayment();
         paymentsMade.add(p);
-        taxDue.remove(p);
+        taxOverdue.remove(p);
     }
 }

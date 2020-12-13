@@ -1,28 +1,32 @@
 import java.time.LocalDate;
+import java.util.Comparator;
 
 /**Payment class
  *
  * */
-public class Payment {
+public class Payment implements Comparable{
     private String eircode;
     private String ownerId;
-    private int year;
+    private int yearDue;
+    private int yearPaid;
     private double amount;
 
-    public Payment(String eircode, String ownerId, int year, double amount) {
+    public Payment(String eircode, String ownerId, int yearDue, int yearPaid, double amount) {
         this.eircode = eircode;
         this.ownerId = ownerId;
-        this.year = year;
+        this.yearDue = yearDue;
+        this.yearPaid = yearPaid;
         this.amount = amount;
     }
 
     public void makePayment() {
         // update payment status to 'paid' with the new amount
         CSVHandler csv = new CSVHandler();
-        if(year > LocalDate.now().getYear()) {
-            csv.changeTaxPaymentStatus(eircode, year, TaxCalculator.overdueFees(amount,year,LocalDate.now().getYear()));
+        // if
+        if(yearDue < LocalDate.now().getYear()) {
+            csv.changeTaxPaymentStatus(eircode, yearDue, TaxCalculator.overdueFees(amount,yearDue,LocalDate.now().getYear()));
         } else {
-            csv.changeTaxPaymentStatus(eircode, year, amount);
+            csv.changeTaxPaymentStatus(eircode, yearDue, amount);
         }
     }
 
@@ -30,14 +34,31 @@ public class Payment {
         return eircode;
     }
 
-    public int getYear() {
-        return year;
+    public int getYearDue() {
+        return yearDue;
+    }
+
+    public int getYearPaid() {
+        return yearPaid;
     }
 
     public double getAmount() {
         return amount;
     }
 
+    public String format() {
+        return String.format("%s,%d,%d,%.2f",ownerId,yearDue,yearPaid,amount);
+    }
+    // year descending
+
+
+    // @Override
+    public int compareTo(Object o) {
+        return ((Payment)o).getYearDue() - this.getYearDue();
+    }
+
+
+    /*
     private double getAmount(String str){
         String[] values = str.split(",");
         String marketValue = "";
@@ -60,8 +81,6 @@ public class Payment {
         return str;
     }
 
+     */
 
-    public String format() {
-        return String.format("%s,%d,%.2f",ownerId,year,amount);
-    }
 }

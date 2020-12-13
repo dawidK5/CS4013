@@ -1,13 +1,20 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * CSVHandler is class for reading from and writing to the csv files.
+ */
 public class CSVHandler {
     private File properties; // eircode,address,currentMarketValue,locationType,principalResidence, currentOwnerId
     private File tax;       // eircode,ownerId,year,amount,paid/not paid
     private File owners;    // ownerId,name,surname,eircodes_array[all ever-owned properties]
 
+    /**
+     * Class constructor. Opens 3 csv files for a system.
+     */
     public CSVHandler() {
-        // if (!properties.exists())
         try {
             properties = new File("properties.csv");
             properties.createNewFile();
@@ -21,6 +28,12 @@ public class CSVHandler {
         }
     }
 
+    /**
+     * Writes into properties output file
+     * @param s             the String line in format eircode,address,current market value,
+     *                      location type,YES or NO for property being principal private residence
+     * @throws IOException  if we can't write to the properties file
+     */
     public void writeToProperties(String s) throws IOException {
         try(FileWriter output =  new FileWriter(properties, true)) {
             output.write(s);
@@ -79,6 +92,147 @@ public class CSVHandler {
         }
         return null;
     }
+    public ArrayList<String> readFromTax(int year) {
+        ArrayList<String> lines = new ArrayList<>();
+        try(Scanner input = new Scanner(tax)) {
+            String s1 = "";
+            String sYear = String.format("%d,0",year);
+            while(input.hasNextLine()) {
+                s1 = input.nextLine();
+                if (s1.contains(sYear)) {
+                    String eirc = s1.substring(0, s1.indexOf(','));
+                    eirc +=
+                    lines.add(s1);
+                }
+            }
+            return lines;
+        } catch(IOException ex) {
+            System.out.println("Cannot access tax.csv.");
+            System.exit(2);
+        }
+        return null;
+    }
+    public ArrayList<String> readFromTax(int year, String routingKey) {
+        ArrayList<String> lines = new ArrayList<>();
+        try(Scanner input = new Scanner(tax)) {
+            String s1 = "";
+            String sYear = String.format("%d,0",year);
+            while(input.hasNextLine()) {
+                s1 = input.nextLine();
+                if(s1.startsWith(routingKey)) {
+                    if (s1.contains(sYear)) {
+                        String eirc = s1.substring(0, s1.indexOf(','));
+                        eirc += lines.add(s1);
+                    }
+                } else {
+                    continue;
+                }
+            }
+            return lines;
+        } catch(IOException ex) {
+            System.out.println("Cannot access tax.csv.");
+            System.exit(2);
+        }
+        return null;
+    }
+    public double readTotalFromTax(String routingKey) {
+        double sum = 0;
+        try(Scanner input = new Scanner(tax)) {
+            String s1 = "";
+            while (input.hasNextLine()) {
+                s1 = input.nextLine();
+                if (s1.startsWith(routingKey)) {
+                    String[] values = s1.split(",");
+                    for(int i=values.length-1; i>=4; i-=5) {
+                        if(values[i].equals("paid")) {
+                            sum+= Double.parseDouble(values[i-1]);
+                        }
+                    }
+
+                }
+            }
+            return sum;
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot find tax.csv.");
+            System.exit(2);
+        }
+        return 0;
+    }
+    public double readAverageFromTax(String routingKey) {
+        int count=0;
+        double sum = 0;
+        try(Scanner input = new Scanner(tax)) {
+            String s1 = "";
+            while (input.hasNextLine()) {
+                s1 = input.nextLine();
+                if (s1.startsWith(routingKey)) {
+                    String[] values = s1.split(",");
+                    for(int i=values.length-1; i>=4; i-=5) {
+                        if(values[i].equals("paid")) {
+                            count++;
+                            sum+= Double.parseDouble(values[i-1]);
+                        }
+                    }
+
+                }
+            }
+            return (count != 0) ? sum/(double)count : 0;
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot find tax.csv.");
+            System.exit(2);
+        }
+        return 0;
+    }
+
+    public String readNumAndProcFromTax(String routingKey) {
+        int paid=0;
+        int paidAndUnpaid=0;
+        try(Scanner input = new Scanner(tax)) {
+            String s1 = "";
+            while (input.hasNextLine()) {
+                s1 = input.nextLine();
+                if (s1.startsWith(routingKey)) {
+                    String[] values = s1.split(",");
+                    for(int i=values.length-1; i>=4; i-=5) {
+                        if(values[i].equals("paid")) {
+                            paid++;
+                        }
+                        paidAndUnpaid++;
+                    }
+                }
+            }
+            return String.format("%d,%.2f",paid,paidAndUnpaid > 0 ? (paid/(double)paidAndUnpaid*100): -1.0);
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot find tax.csv.");
+            System.exit(2);
+        }
+        return null;
+    }
+
+/*
+    public ArrayList<String> readTaxesDueFromTax(TaxCalculator tc) {
+        double sum = 0;
+        try (Scanner input = new Scanner(tax)) {
+
+            String s1 = "";
+            while (input.hasNextLine()) {
+                s1 = input.nextLine();
+
+                String[] values = s1.split(",");
+                int year = LocalDate.now().getYear();
+
+                for (int i = values.length - 1; i >= 4; i -= 5) {
+                    if (values[i].equals("notpaid")) {
+                        tc.reload(readFromProperties(values[0]));
+                        sum += tc.getTax();
+                    }
+                }
+            }
+        }
+    }
+
+ */
+
     public String readFromOwners(String ownerId) {
         try(Scanner input = new Scanner(owners)) {
             boolean found = false;
@@ -100,13 +254,14 @@ public class CSVHandler {
     public void changeTaxPaymentStatus(String eircode, int year, double nAmount) {
         try {
             Scanner input = new Scanner(tax);
+            String sYear = Integer.toString((year%((year/100)*100))); // last 2 digits of year
             File temp = new File("temp_pay_tax.tmp");
             FileWriter output = new FileWriter(temp, true);
             while (input.hasNext()) {
                 String s1 = input.nextLine();
                 if (s1.startsWith(eircode)) {
-                    String s2 = s1.substring(s1.indexOf(Integer.toString(year)), s1.indexOf('d'));
-                    output.write(s1.replaceFirst(s2, s2.replaceFirst(",.*i", String.format(",%.2f,pai",nAmount))));
+                    String s2 = s1.substring(s1.indexOf(sYear+",0", s1.indexOf('d')));
+                    output.write(s1.replaceFirst(s2, s2.replaceFirst(",0", ","+LocalDate.now().getYear())));
                     break;
                 }
                 output.write(s1);
@@ -121,9 +276,10 @@ public class CSVHandler {
         } catch (IOException e) {
             System.out.println("CSV file IO exception.");
         }
-
-
     }
+
+
+
     /*
     public void replaceLine(String fileType, String original, String replacement) {
         Scanner input;
@@ -184,4 +340,6 @@ public class CSVHandler {
                 System.exit(2);
             }
         }
-    }
+
+
+}
