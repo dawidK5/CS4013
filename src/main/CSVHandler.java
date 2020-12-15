@@ -9,7 +9,7 @@ import java.util.Scanner;
  * CSVHandler is class for reading from and writing to the csv files.
  */
 public class CSVHandler {
-    private File properties; // eircode,address,currentMarketValue,locationType,principalResidence, currentOwnerId
+    private File properties; // eircode,address,currentMarketValue,locationType,principalResidence,currentOwnerId
     private File tax;       // eircode,ownerId,year,amount,paid/not paid
     private File owners;    // ownerId,name,surname,eircodes_array[all ever-owned properties]
 
@@ -36,7 +36,7 @@ public class CSVHandler {
      *                      location type,YES or NO for property being principal private residence
      * @throws IOException  if we can't write to the properties file
      */
-    public void writeToProperties(String s) throws IOException {
+    protected void writeToProperties(String s) throws IOException {
         try(FileWriter output =  new FileWriter(properties, true)) {
             output.write(s);
         } catch (IOException ex) {
@@ -44,7 +44,13 @@ public class CSVHandler {
             throw ex;
         }
     }
-    public void writeToTax(String s) throws IOException{
+
+    /**
+     * Adds a new tax entry for a property to the CSV files
+     * @param s             the String in format "eircode,ownerId,year due,year paid,paid/notpaid"
+     * @throws IOException  cannot write to tax.csv
+     */
+    protected void writeToTax(String s) throws IOException{
         try(FileWriter output =  new FileWriter(tax, true)) {
             output.write(s);
         } catch (IOException ex) {
@@ -52,7 +58,14 @@ public class CSVHandler {
             throw ex;
         }
     }
-    public void writeToOwners(String s) throws IOException {
+
+    /**
+     * Adds a new entry to owners csv file
+     * @param s             the String line in format "ownerId,first name,surname,
+     *                      eircodes of properties (still owned or sold)"
+     * @throws IOException  cannot write to owners.csv
+     */
+    protected void writeToOwners(String s) throws IOException {
         try(FileWriter output = new FileWriter(owners, true) ) {
             output.write(s);
         } catch(IOException ex) {
@@ -60,6 +73,15 @@ public class CSVHandler {
             throw ex;
         }
     }
+
+    /**
+     * Reads a csv entry about a property for eircode specified
+     * @param eircode   the String for the eircode
+     * @return          the property details in format
+     *                  "eircode,address,property value,location category,
+     *                  YES or NO (if property is principal residence),current owner's ID",
+     *                  nul if eircode not found
+     */
     public String readFromProperties(String eircode) {
         try(Scanner input = new Scanner(properties)) {
             boolean found = false;
@@ -77,6 +99,14 @@ public class CSVHandler {
         }
         return null;
     }
+
+    /**
+     * Reads a tax entry from csv file for a given eircode
+     * @param eircode   The String for eircode
+     * @return          the String for tax entries in format
+     *                  "eircode,ownerId,year due,year paid,paid/notpaid,ownerId,year due,year paid,paid/notpaid...",
+     *                  null if eircode not found
+     */
     public String readFromTax(String eircode) {
         try(Scanner input = new Scanner(tax)) {
             boolean found = false;
@@ -94,6 +124,13 @@ public class CSVHandler {
         }
         return null;
     }
+
+    /**
+     * Obtains a list of property eircodes that have tax overdue from a particular year
+     * @param year      the integer for the year
+     * @return          the ArrayList of Strings for tax overdue, each in format "owner id,year due,0,notpaid",
+     *                  null if no such entries found
+     */
     public ArrayList<String> readFromTax(int year) {
         ArrayList<String> lines = new ArrayList<>();
         try(Scanner input = new Scanner(tax)) {
@@ -102,8 +139,6 @@ public class CSVHandler {
             while(input.hasNextLine()) {
                 s1 = input.nextLine();
                 if (s1.contains(sYear)) {
-                    String eirc = s1.substring(0, s1.indexOf(','));
-                    eirc +=
                     lines.add(s1);
                 }
             }
@@ -114,6 +149,14 @@ public class CSVHandler {
         }
         return null;
     }
+
+    /**
+     * Queries the csv tax file to find the csv entries for properties with tax overdue in particular area
+     * for year specified
+     * @param year          the integer for the year to query
+     * @param routingKey    the String of the routing key of the area to query
+     * @return              the ArrayList of Strings with tax entries
+     */
     public ArrayList<String> readFromTax(int year, String routingKey) {
         ArrayList<String> lines = new ArrayList<>();
         try(Scanner input = new Scanner(tax)) {
@@ -123,11 +166,8 @@ public class CSVHandler {
                 s1 = input.nextLine();
                 if(s1.startsWith(routingKey)) {
                     if (s1.contains(sYear)) {
-                        String eirc = s1.substring(0, s1.indexOf(','));
-                        eirc += lines.add(s1);
+                        lines.add(s1);
                     }
-                } else {
-                    continue;
                 }
             }
             return lines;
@@ -137,6 +177,12 @@ public class CSVHandler {
         }
         return null;
     }
+
+    /**
+     * Queries the csv tax file to find the total tax paid for particular area nased on routing key
+     * @param routingKey    the String of the routing key
+     * @return              the double with the sum of tax paid
+     */
     public double readTotalFromTax(String routingKey) {
         double sum = 0;
         try(Scanner input = new Scanner(tax)) {
@@ -160,6 +206,12 @@ public class CSVHandler {
         }
         return 0;
     }
+
+    /**
+     * Finds the average value of tax paid in a particular area
+     * @param routingKey    the String for the routing key
+     * @return              double for the average tax paid, 0 if no tax paid entries exists for the area
+     */
     public double readAverageFromTax(String routingKey) {
         int count=0;
         double sum = 0;
@@ -186,6 +238,12 @@ public class CSVHandler {
         return 0;
     }
 
+    /**
+     * Obtains the number of properties with tax paid in area specified by routing key and the percentage of taxes paid
+     * @param routingKey    the String with the routing key for the area to query
+     * @return              String in format "number of tax payments,percentage of taxes paid", "0.0,-1.0" if no
+     *                      tax entries found
+     */
     public String readNumAndProcFromTax(String routingKey) {
         int paid=0;
         int paidAndUnpaid=0;
@@ -235,6 +293,12 @@ public class CSVHandler {
 
  */
 
+    /**
+     * Reads an entry in a csv file for the owner specified
+     * @param ownerId   the String for owner ID
+     * @return          the owner details in format "ownerId,first name,surname,
+     *                  eircodes of properties (still owned or sold)"
+     */
     public String readFromOwners(String ownerId) {
         try(Scanner input = new Scanner(owners)) {
             boolean found = false;
@@ -253,7 +317,13 @@ public class CSVHandler {
         return null;
     }
 
-    public void changeTaxPaymentStatus(String eircode, int year, double nAmount) {
+    /**
+     * Updates the csv file for tax to mark the tax as paid in this year
+     * @param eircode   the String for the eircode
+     * @param year      the integer for the year tax payment was due
+     * @param nAmount   the double to be updated for the amount paid for the tax including any late fees
+     */
+    protected void changeTaxPaymentStatus(String eircode, int year, double nAmount) {
         try {
             Scanner input = new Scanner(tax);
             String sYear = Integer.toString((year%((year/100)*100))); // last 2 digits of year
@@ -303,6 +373,11 @@ public class CSVHandler {
     }
      */
 
+    /**
+     * Removes the specified line from the csv file specified
+     * @param fileType  the String for file type to modify, either "properties", "tax" or "owners"
+     * @param line      the String for line to be removed from the csv file
+     */
     protected void removeLine(String fileType, String line) {
         Scanner input;
         File source;

@@ -218,7 +218,7 @@ public class Owner {
     }
 
     /**
-     * Sorts,displays and calculates overdue tax for this owner
+     * Allows to view the overdue tax for this owner
      */
     public void viewOverdueTax() {
         Collections.sort(taxOverdue);

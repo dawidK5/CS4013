@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * This class stores information on payments for tax due
  */
-public class Payment implements Comparable{
+public class Payment implements Comparable {
     private String eircode;
     private String ownerId;
     private int yearDue;
@@ -14,11 +14,11 @@ public class Payment implements Comparable{
 
     /**
      * Cnstructor specifying payment details
-     * @param eircode
-     * @param ownerId
-     * @param yearDue
-     * @param yearPaid
-     * @param amount
+     * @param eircode   the String with the eircode
+     * @param ownerId   the String for ownerID
+     * @param yearDue   the integer year that tax payment was due
+     * @param yearPaid  the integer when the tax was paid
+     * @param amount    the double of amount to be paid
      */
     public Payment(String eircode, String ownerId, int yearDue, int yearPaid, double amount) {
         this.eircode = eircode;
@@ -41,26 +41,37 @@ public class Payment implements Comparable{
         }
     }
 
+    /**
+     * Returns the ircode of wehich this payment was made
+     * @return  the String for eircode
+     */
     public String getEircode() {
         return eircode;
     }
 
+    /**
+     * Gets the year for which the tax for this payment was due
+     * @return  the integer for the year
+     */
     public int getYearDue() {
         return yearDue;
     }
 
+    /**
+     * Obtains the year when this payment was made
+     * @return  the integer for year paid
+     */
     public int getYearPaid() {
         return yearPaid;
     }
 
+    /**
+     * Gets the amount paid in this payment
+     * @return  the double for the amount paid this
+     */
     public double getAmount() {
         return amount;
     }
-
-    public String format() {
-        return String.format("%s,%d,%d,%.2f",ownerId,yearDue,yearPaid,amount);
-    }
-
 
     /**
      * Sorts payments by year with descending order
